@@ -1,0 +1,31 @@
+<event-handlers>
+	<!-- Miscelaneous handlers -->
+	<handler class="org.hannes.event.LoginEvent">org.hannes.event.impl.PlayerLoginEventHandler</handler>
+	<handler class="org.hannes.event.InitializeEvent">org.hannes.event.impl.InitializeEventHandler</handler>
+	<handler class="org.hannes.event.WalkEvent">org.hannes.event.impl.WalkEventHandler</handler>
+	<handler class="org.hannes.event.CommandEvent">org.hannes.event.impl.CommandEventHandler</handler>
+	<handler class="org.hannes.event.IdleEvent">org.hannes.event.impl.IdleEventHandler</handler>
+	<handler class="org.hannes.event.RegionChangedEvent">org.hannes.event.impl.RegionChangedEventHandler</handler>
+	<handler class="org.hannes.event.ItemObjectInteractionRequest">org.hannes.event.impl.ItemObjectRequestHandler</handler>
+	<handler class="org.hannes.event.ItemObjectInteractionEvent">org.hannes.event.impl.CommonItemObjectInteractionEventHandler</handler>
+	<handler class="org.hannes.event.UserPromptEvent">org.hannes.event.impl.UserPromptEventHandler</handler>
+	<handler class="org.hannes.event.ContinueEvent">org.hannes.event.impl.ContinueEventHandler</handler>
+	
+	<!-- ground items -->
+	<handler class="org.hannes.event.ItemPickupEvent">org.hannes.event.impl.ItemPickupEventHandler</handler>
+	<handler class="org.hannes.event.InterfaceItemEvent">org.hannes.event.impl.DropItemEventHandler</handler>
+	
+	<!-- Button handlers -->
+	<handler class="org.hannes.event.ButtonEvent">org.hannes.event.impl.CommonButtonEventHandler</handler>
+	<handler class="org.hannes.event.ButtonEvent">org.hannes.event.impl.SettingsEventHandler</handler>
+	<handler class="org.hannes.event.ButtonEvent">org.hannes.rs2.content.skill.product.ProductionInterface</handler>
+	
+	<!-- Banking and Equipment -->
+	<handler class="org.hannes.event.InterfaceItemEvent">org.hannes.event.impl.DepositInterfaceEventHandler</handler>
+	<handler class="org.hannes.event.InterfaceItemEvent">org.hannes.event.impl.WithdrawInterfaceEventHandler</handler>
+	<handler class="org.hannes.event.EquipEvent">org.hannes.event.impl.EquipEventHandler</handler>
+	
+	<!-- Objects -->
+	<handler class="org.hannes.event.ObjectInteractionRequest">org.hannes.event.impl.ObjectRequestEventHandler</handler>
+	<handler class="org.hannes.event.ObjectInteractionEvent">org.hannes.event.impl.CommonObjectEventHandler</handler>
+</event-handlers>

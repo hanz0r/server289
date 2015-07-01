@@ -49,8 +49,7 @@ public class App {
 		/*
 		 * Create TCP transport
 		 */
-		final TCPNIOTransport transport =
-				TCPNIOTransportBuilder.newInstance().build();
+		final TCPNIOTransport transport = TCPNIOTransportBuilder.newInstance().build();
 		transport.setProcessor(filterChainBuilder.build());
 
         try {
