@@ -5,7 +5,9 @@ package org.hanonator.game.event;
  * 
  * @author user104
  */
-public @interface Decode {
+public @interface Serialized {
+	
+	int index() default 0;
 	
 	/**
 	 * Get the DataType of the 

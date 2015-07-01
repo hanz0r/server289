@@ -5,10 +5,12 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
+import org.glassfish.grizzly.filterchain.FilterChain;
 import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
+import org.hanonator.net.GameMessageBeanFilter;
 import org.hanonator.net.GameMessageFilter;
 
 /**
@@ -39,6 +41,11 @@ public class App {
 		 * Decode the game packets
 		 */
 		filterChainBuilder.add(new GameMessageFilter());
+		
+		/*
+		 * Parse into events
+		 */
+		filterChainBuilder.add(new GameMessageBeanFilter());
 
 		/*
 		 * Create TCP transport
