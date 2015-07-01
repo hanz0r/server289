@@ -1,4 +1,4 @@
-package org.hanonator.game;
+package org.hanonator.game.event;
 
 /**
  * 

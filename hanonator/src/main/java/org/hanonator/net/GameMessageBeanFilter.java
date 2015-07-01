@@ -1,19 +1,21 @@
 package org.hanonator.net;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.glassfish.grizzly.AbstractTransformer;
 import org.glassfish.grizzly.TransformationException;
 import org.glassfish.grizzly.TransformationResult;
+import org.glassfish.grizzly.TransformationResult.Status;
 import org.glassfish.grizzly.attributes.AttributeStorage;
 import org.glassfish.grizzly.filterchain.AbstractCodecFilter;
-import org.hanonator.game.Event;
+import org.hanonator.game.event.Event;
 
 public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Event> {
 
 	/**
-	 * The map
+	 * Maps packet opcodes to the events that they trigger
 	 */
 	private static final Map<Integer, Class<? extends Event>> events = new HashMap<>();
 
@@ -37,7 +39,35 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 
 		@Override
 		protected TransformationResult<GameMessage, Event> transformImpl(AttributeStorage storage, GameMessage input) throws TransformationException {
-			return null;
+			Class<? extends Event> c = events.get(input.getId());
+			
+			/*
+			 * If the class is null, there is an error
+			 */
+			if (c == null) {
+				return new TransformationResult<GameMessage, Event>(Status.ERROR, null, input);
+			}
+			
+			try {
+				/*
+				 * Create the event
+				 */
+				Event event = c.getConstructor(new Class<?>[0]).newInstance();
+
+				/*
+				 * FIXME: Horribly inefficient
+				 */
+				for (int i = 0; input.hasRemaining() || i > 10; i++) {
+					
+				}
+
+				/*
+				 * Push the transformation to the next filter
+				 */
+				return new TransformationResult<GameMessage, Event>(Status.COMPLETE, event, input);	
+			} catch (Exception ex) {
+				throw new TransformationException("Error parsing Event", ex);
+			}
 		}
 		
 	}

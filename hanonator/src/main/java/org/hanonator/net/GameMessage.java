@@ -34,11 +34,6 @@ public class GameMessage {
 		return length;
 	}
 
-	@Override
-	public String toString() {
-		return "GameMessage [id=" + id + ", length=" + length + ", payload=" + payload.getShort() + "," + payload.getShort() + "]";
-	}
-
 	public boolean hasRemaining() {
 		return payload.hasRemaining();
 	}
