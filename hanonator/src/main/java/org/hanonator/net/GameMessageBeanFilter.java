@@ -18,7 +18,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 	private static final Map<Integer, Class<? extends Event>> events = new HashMap<>();
 
 	static {
-		events.put(60, test);
+		events.put(60, null);
 	}
 
 	public GameMessageBeanFilter() {
