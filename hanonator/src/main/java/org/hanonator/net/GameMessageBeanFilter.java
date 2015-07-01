@@ -12,6 +12,7 @@ import org.glassfish.grizzly.attributes.AttributeStorage;
 import org.glassfish.grizzly.filterchain.AbstractCodecFilter;
 import org.hanonator.game.event.Serialized;
 import org.hanonator.game.event.Event;
+import org.hanonator.game.event.impl.TestEvent;
 
 public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Event> {
 
@@ -21,7 +22,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 	private static final Map<Integer, Class<? extends Event>> events = new HashMap<>();
 
 	static {
-		events.put(60, null);
+		events.put(60, TestEvent.class);
 	}
 
 	public GameMessageBeanFilter() {

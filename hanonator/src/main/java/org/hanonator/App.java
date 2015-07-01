@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
-import org.glassfish.grizzly.filterchain.FilterChain;
 import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
