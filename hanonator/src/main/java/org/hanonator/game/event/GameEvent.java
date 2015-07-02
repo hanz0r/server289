@@ -19,7 +19,7 @@ public class GameEvent {
 	 * THe map of attributes
 	 */
 	private final Map<String, Object> attributes = new HashMap<>();
-	
+
 	public GameEvent(int index) {
 		this.index = index;
 	}

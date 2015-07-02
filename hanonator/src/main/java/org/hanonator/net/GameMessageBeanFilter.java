@@ -58,7 +58,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Game
 				/*
 				 * 
 				 */
-				// event.unpack();
+				// event.unpack(input);
 				
 				/*
 				 * Push the transformation to the next filter

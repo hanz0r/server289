@@ -14,6 +14,9 @@ public class GameMessageFilter extends BaseFilter {
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
 		final HeapBuffer buffer = (HeapBuffer) ctx.getMessage();
 
+		/*
+		 * 
+		 */
 		if (buffer.remaining() > 1) {
 			int index = buffer.get() & 0xFF;
 			int length = PacketLength.get(index);
