@@ -8,7 +8,7 @@ import org.hanonator.net.GameMessage;
 public interface DataParser<T> {
 
 	/**
-	 * 
+	 * Parses the GameMessage to the given data type
 	 * 
 	 * @param payload
 	 * @throws Exception
