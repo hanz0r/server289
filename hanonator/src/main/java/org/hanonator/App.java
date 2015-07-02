@@ -29,7 +29,7 @@ public class App {
 	private static final SocketAddress ADDRESS = new InetSocketAddress("localhost", 43594);
 
 	public static void main(String[] args) throws IOException {
-		FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();
+		final FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();
 
 		/*
 		 * Handles basic transport
