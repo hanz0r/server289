@@ -28,4 +28,12 @@ public class GameEvent {
 		return index;
 	}
 	
+	public Object getAttribute(String name) {
+		return attributes.get(name);
+	}
+	
+	public void setAttribute(String name, Object object) {
+		this.attributes.put(name, object);
+	}
+	
 }
