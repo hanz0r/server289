@@ -9,14 +9,14 @@ import org.glassfish.grizzly.TransformationResult;
 import org.glassfish.grizzly.TransformationResult.Status;
 import org.glassfish.grizzly.attributes.AttributeStorage;
 import org.glassfish.grizzly.filterchain.AbstractCodecFilter;
-import org.hanonator.game.event.Event;
+import org.hanonator.game.event.GameEvent;
 
-public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Event> {
+public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, GameEvent> {
 
 	/**
 	 * Maps packet opcodes to the events that they trigger
 	 */
-	private static final Map<Integer, Class<? extends Event>> events = new HashMap<>();
+	private static final Map<Integer, Class<? extends GameEvent>> events = new HashMap<>();
 
 	public GameMessageBeanFilter() {
 		super(new BeanDecoder(), new BeanEncoder());
@@ -28,7 +28,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 	 * @author user104
 	 *
 	 */
-	public static class BeanDecoder extends AbstractTransformer<GameMessage, Event> {
+	public static class BeanDecoder extends AbstractTransformer<GameMessage, GameEvent> {
 
 		public String getName() {
 			return "bean decoder";
@@ -39,21 +39,21 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 		}
 
 		@Override
-		protected TransformationResult<GameMessage, Event> transformImpl(AttributeStorage storage, GameMessage input) throws TransformationException {
-			Class<? extends Event> c = events.get(input.getId());
+		protected TransformationResult<GameMessage, GameEvent> transformImpl(AttributeStorage storage, GameMessage input) throws TransformationException {
+			Class<? extends GameEvent> c = events.get(input.getId());
 			
 			/*
 			 * If the class is null, there is an error
 			 */
 			if (c == null) {
-				return new TransformationResult<GameMessage, Event>(Status.ERROR, null, input);
+				return new TransformationResult<GameMessage, GameEvent>(Status.ERROR, null, input);
 			}
 			
 			try {
 				/*
 				 * Create the event
 				 */
-				Event event = c.getConstructor(Integer.class).newInstance(input.getId());
+				GameEvent event = c.getConstructor(Integer.class).newInstance(input.getId());
 
 				/*
 				 * 
@@ -64,7 +64,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 				 * Push the transformation to the next filter
 				 */
 				System.out.println(event);
-				return new TransformationResult<GameMessage, Event>(Status.COMPLETE, event, input);	
+				return new TransformationResult<GameMessage, GameEvent>(Status.COMPLETE, event, input);	
 			} catch (Exception ex) {
 				throw new TransformationException("Error parsing Event", ex);
 			}
@@ -72,18 +72,18 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Even
 		
 	}
 
-	public static class BeanEncoder extends AbstractTransformer<Event, GameMessage> {
+	public static class BeanEncoder extends AbstractTransformer<GameEvent, GameMessage> {
 
 		public String getName() {
 			return "bean encoder";
 		}
 
 		@Override
-		protected TransformationResult<Event, GameMessage> transformImpl(AttributeStorage storage, Event input) throws TransformationException {
+		protected TransformationResult<GameEvent, GameMessage> transformImpl(AttributeStorage storage, GameEvent input) throws TransformationException {
 			return null;
 		}
 
-		public boolean hasInputRemaining(AttributeStorage storage, Event input) {
+		public boolean hasInputRemaining(AttributeStorage storage, GameEvent input) {
 			return false;
 		}
 		

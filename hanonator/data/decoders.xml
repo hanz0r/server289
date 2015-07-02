@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<decoders>
+	<decoder>
+		<opcode></opcode>
+		<length></length>
+		<attributes>
+			<attribute type="SHORT" name="test-1" />
+			<attribute type="SHORT" name="test-2" />
+		</attributes>
+	</decoder>
+</decoders>

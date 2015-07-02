@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author user104
  */
-public class Event {
+public class GameEvent {
 
 	/**
 	 * The opcode of the event
@@ -20,7 +20,7 @@ public class Event {
 	 */
 	private final Map<String, Object> attributes = new HashMap<>();
 	
-	public Event(int index) {
+	public GameEvent(int index) {
 		this.index = index;
 	}
 
