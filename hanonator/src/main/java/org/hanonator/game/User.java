@@ -14,7 +14,7 @@ public class User {
 	}
 
 	public void push(GameException ex) {
-		// TODO
+		// TODO: Disconnect the player with a given error message
 	}
 
 	public Connection<?> getConnection() {

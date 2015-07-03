@@ -3,6 +3,8 @@ package org.hanonator.game.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hanonator.net.GameMessage;
+
 /**
  * An event
  * 
@@ -35,5 +37,12 @@ public class GameEvent {
 	public void setAttribute(String name, Object object) {
 		this.attributes.put(name, object);
 	}
+
+	@Override
+	public String toString() {
+		return "GameEvent [index=" + index + ", attributes=" + attributes.entrySet().size() + "]";
+	}
+	
+	
 	
 }

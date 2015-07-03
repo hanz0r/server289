@@ -55,7 +55,21 @@ public interface DataParser<T> {
 		/**
 		 * Unsigned long (8 bytes)
 		 */
-		LONG((m, u) -> (m.getInt() << 32) | m.getInt());
+		LONG((m, u) -> (m.getInt() << 32) | m.getInt()),
+		
+		/**
+		 * Gets the walking queue;
+		 */
+		QUEUE((m, u) -> {
+			throw new GameException(new UnsupportedOperationException());
+		}),
+		
+		/**
+		 * Gets the walking queue;
+		 */
+		STRING((m, u) -> {
+			throw new GameException(new UnsupportedOperationException());
+		});
 		
 		/**
 		 * The data parser

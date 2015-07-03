@@ -1,14 +1,17 @@
 package org.hanonator;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
 import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
+import org.hanonator.game.event.Templates;
 import org.hanonator.net.GameMessageBeanFilter;
 import org.hanonator.net.GameMessageFilter;
 
@@ -28,7 +31,13 @@ public class App {
 	 */
 	private static final SocketAddress ADDRESS = new InetSocketAddress("localhost", 43594);
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws DocumentException, Exception {
+		/*
+		 * Loading decoders
+		 */
+		SAXReader reader = new SAXReader();
+		Templates.load(reader.read(new File("data/decoders.xml")));
+		
 		final FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();
 
 		/*

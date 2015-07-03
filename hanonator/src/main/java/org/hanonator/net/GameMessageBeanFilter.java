@@ -1,7 +1,6 @@
 package org.hanonator.net;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
 
 import org.glassfish.grizzly.AbstractTransformer;
 import org.glassfish.grizzly.TransformationException;
@@ -9,14 +8,14 @@ import org.glassfish.grizzly.TransformationResult;
 import org.glassfish.grizzly.TransformationResult.Status;
 import org.glassfish.grizzly.attributes.AttributeStorage;
 import org.glassfish.grizzly.filterchain.AbstractCodecFilter;
+import org.hanonator.game.GameException;
+import org.hanonator.game.event.Attribute;
+import org.hanonator.game.event.DataParser;
 import org.hanonator.game.event.GameEvent;
+import org.hanonator.game.event.Template;
+import org.hanonator.game.event.Templates;
 
 public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, GameEvent> {
-
-	/**
-	 * Maps packet opcodes to the events that they trigger
-	 */
-	private static final Map<Integer, Class<? extends GameEvent>> events = new HashMap<>();
 
 	public GameMessageBeanFilter() {
 		super(new BeanDecoder(), new BeanEncoder());
@@ -40,35 +39,41 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Game
 
 		@Override
 		protected TransformationResult<GameMessage, GameEvent> transformImpl(AttributeStorage storage, GameMessage input) throws TransformationException {
-			Class<? extends GameEvent> c = events.get(input.getId());
+			/*
+			 * Create the event
+			 */
+			GameEvent event = new GameEvent(input.getId());
+
+			/*
+			 * Get the template for the message's id
+			 */
+			Template template = Templates.get(input.getId());
 			
 			/*
-			 * If the class is null, there is an error
+			 * Parse the data for all of the template's attributes
 			 */
-			if (c == null) {
-				return new TransformationResult<GameMessage, GameEvent>(Status.ERROR, null, input);
+			for (Iterator<Attribute> iterator = template.iterator(); iterator.hasNext(); ) {
+				Attribute attribute = iterator.next();
+				
+				/*
+				 * The data parser
+				 */
+				DataParser<?> parser = attribute.getType().getParser();
+				
+				/*
+				 * Parse the message
+				 */
+				try {
+					event.setAttribute(attribute.getName(), parser.parse(input, null));
+				} catch (GameException e) {
+					e.printStackTrace();
+				}
 			}
 			
-			try {
-				/*
-				 * Create the event
-				 */
-				GameEvent event = c.getConstructor(Integer.class).newInstance(input.getId());
-
-				/*
-				 * 
-				 */
-				// event.unpack(input);
-				
-				
-				/*
-				 * Push the transformation to the next filter
-				 */
-				System.out.println(event);
-				return new TransformationResult<GameMessage, GameEvent>(Status.COMPLETE, event, input);	
-			} catch (Exception ex) {
-				throw new TransformationException("Error parsing Event", ex);
-			}
+			/*
+			 * Push the transformation to the next filter
+			 */
+			return new TransformationResult<GameMessage, GameEvent>(Status.COMPLETE, event, input);
 		}
 		
 	}
