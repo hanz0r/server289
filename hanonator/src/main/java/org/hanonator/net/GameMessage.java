@@ -38,4 +38,8 @@ public class GameMessage {
 		return payload.hasRemaining();
 	}
 
+	public HeapBuffer getPayload() {
+		return payload;
+	}
+
 }
