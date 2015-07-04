@@ -9,11 +9,11 @@ import org.glassfish.grizzly.TransformationResult.Status;
 import org.glassfish.grizzly.attributes.AttributeStorage;
 import org.glassfish.grizzly.filterchain.AbstractCodecFilter;
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.Attribute;
-import org.hanonator.game.event.DataParser;
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.game.event.Template;
-import org.hanonator.game.event.Templates;
+import org.hanonator.game.event.filter.Attribute;
+import org.hanonator.game.event.filter.Filter;
+import org.hanonator.game.event.filter.Template;
+import org.hanonator.game.event.filter.Templates;
 
 public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, GameEvent> {
 
@@ -58,7 +58,7 @@ public class GameMessageBeanFilter extends AbstractCodecFilter<GameMessage, Game
 				/*
 				 * The data parser
 				 */
-				DataParser<?> parser = attribute.getType().getParser();
+				Filter<?> parser = attribute.getType().getParser();
 				
 				/*
 				 * Parse the message

@@ -1,11 +1,11 @@
-package org.hanonator.game.event;
+package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
 import org.hanonator.game.User;
 import org.hanonator.net.GameMessage;
 
 @FunctionalInterface
-public interface DataParser<T> {
+public interface Filter<T> {
 
 	/**
 	 * Parses the GameMessage to the given data type
@@ -74,17 +74,17 @@ public interface DataParser<T> {
 		/**
 		 * The data parser
 		 */
-		private final DataParser<?> parser;
+		private final Filter<?> parser;
 		
 		/**
 		 * 
 		 * @param parser
 		 */
-		private DataType(DataParser<?> parser) {
+		private DataType(Filter<?> parser) {
 			this.parser = parser;
 		}
 
-		public DataParser<?> getParser() {
+		public Filter<?> getParser() {
 			return parser;
 		}
 		

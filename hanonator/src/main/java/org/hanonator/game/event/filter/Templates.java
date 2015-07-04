@@ -1,4 +1,4 @@
-package org.hanonator.game.event;
+package org.hanonator.game.event.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.hanonator.game.event.DataParser.DataType;
+import org.hanonator.game.event.filter.Filter.DataType;
 import org.hanonator.net.util.PacketLength;
 
 public class Templates {
@@ -16,7 +16,7 @@ public class Templates {
 	private static final Logger logger = Logger.getLogger(Templates.class.getName());
 
 	/**
-	 * 
+	 * Collection of templates
 	 */
 	private static final Map<Integer, Template> templates = new HashMap<>();
 	
@@ -78,7 +78,7 @@ public class Templates {
 				/*
 				 * Add the attribute to the template
 				 */
-				template.add(new org.hanonator.game.event.Attribute(name, type));
+				template.add(new org.hanonator.game.event.filter.Attribute(name, type));
 			}
 			
 			/*

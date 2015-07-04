@@ -1,4 +1,4 @@
-package org.hanonator.game.event;
+package org.hanonator.game.event.filter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
