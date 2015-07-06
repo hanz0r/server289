@@ -1,7 +1,10 @@
-package org.hanonator.game.event.filter;
+package org.hanonator.game.event.template;
 
-import org.hanonator.game.event.filter.Filter.DataType;
-
+/**
+ * Represents an attribute from a game event
+ * @author user104
+ *
+ */
 public class Attribute {
 	
 	/**

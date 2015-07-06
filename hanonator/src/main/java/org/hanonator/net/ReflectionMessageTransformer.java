@@ -9,42 +9,43 @@ import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.net.util.GameState;
 
-public class ReflectionMessageTransformer  extends AbstractTransformer<GameMessage, GameEvent> {
+public class ReflectionMessageTransformer extends AbstractTransformer<GameMessage, GameEvent> {
 
 	@Override
 	protected TransformationResult<GameMessage, GameEvent> transformImpl(AttributeStorage storage, GameMessage input) throws TransformationException {
-		switch ((GameState) storage.getAttributes().getAttribute("game-state", () -> GameState.CONNECTED)) {
-		/*
-		 * 
-		 */
-		case INACTIVE:
-		case INITIALIZED:
-		case ACTIVE:
-			return null;
-			
-		/*
-		 * 
-		 */
-		case CONNECTED:
-		case LOGIN:
-			GameEvent login_event = new GameEvent(-1);
-			
-			/*
-			 * Add the payload to the event
-			 */
-			
-			
-			/*
-			 * 
-			 */
-			return new TransformationResult<GameMessage, GameEvent>(Status.COMPLETE, login_event, input);
-			
-		/*
-		 * The other cases should not happen
-		 */
-		default:
-			throw new TransformationException(new GameException(new IllegalStateException("cannot transform game message")));
-		}
+		return null;
+//		switch ((GameState) storage.getAttributes().getAttribute("game-state", () -> GameState.CONNECTED)) {
+//		/*
+//		 * 
+//		 */
+//		case INACTIVE:
+//		case INITIALIZED:
+//		case ACTIVE:
+//			return null;
+//			
+//		/*
+//		 * 
+//		 */
+//		case CONNECTED:
+//		case LOGIN:
+//			GameEvent login_event = new GameEvent(-1);
+//			
+//			/*
+//			 * Add the payload to the event
+//			 */
+//			
+//			
+//			/*
+//			 * 
+//			 */
+//			return new TransformationResult<GameMessage, GameEvent>(Status.COMPLETE, login_event, input);
+//			
+//		/*
+//		 * The other cases should not happen
+//		 */
+//		default:
+//			throw new TransformationException(new GameException(new IllegalStateException("cannot transform game message")));
+//		}
 	}
 	
 //		@Override

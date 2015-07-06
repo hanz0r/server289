@@ -1,4 +1,4 @@
-package org.hanonator.game.event.filter;
+package org.hanonator.game.event.template;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.hanonator.game.event.filter.Filter.DataType;
 import org.hanonator.net.util.PacketLength;
 
 public class Templates {
@@ -37,17 +36,22 @@ public class Templates {
 			/*
 			 * Get the index of the decoder
 			 */
-			int index = Integer.valueOf(element.element("opcode").getText());
+			int index = Integer.valueOf(element.attributeValue("opcode"));
+			
+			/*
+			 * Length of the packet
+			 */
+			int length = Integer.valueOf(element.attributeValue("length"));
 			
 			/*
 			 * Set the size of the packets
 			 */
-			PacketLength.put(index, Integer.valueOf(element.elementText("length")));
+			PacketLength.put(index, length);
 			
 			/*
 			 * Parse the decoder's attributes
 			 */
-			List<Element> elements = element.element("attributes").elements("attribute");
+			List<Element> elements = element.elements();
 			
 			/*
 			 * The decoder's attributes
@@ -78,7 +82,7 @@ public class Templates {
 				/*
 				 * Add the attribute to the template
 				 */
-				template.add(new org.hanonator.game.event.filter.Attribute(name, type));
+				template.add(new org.hanonator.game.event.template.Attribute(name, type));
 			}
 			
 			/*

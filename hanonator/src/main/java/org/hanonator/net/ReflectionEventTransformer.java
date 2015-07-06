@@ -21,5 +21,5 @@ public class ReflectionEventTransformer extends AbstractTransformer<GameEvent, G
 	public boolean hasInputRemaining(AttributeStorage storage, GameEvent input) {
 		return false;
 	}
-	
+
 }

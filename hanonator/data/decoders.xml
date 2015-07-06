@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <decoders>
-	<decoder>
-		<opcode>60</opcode>
-		<length>4</length>
-		<attributes>
-			<attribute type="SHORT" name="test-1" />
-			<attribute type="SHORT" name="test-2" />
-		</attributes>
+	<decoder opcode="60" length="4">
+		<attribute type="SHORT" name="test-1" />
+		<attribute type="SHORT" name="test-2" />
 	</decoder>
+	<decoder opcode="181" length="0" />
 </decoders>
