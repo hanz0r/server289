@@ -13,8 +13,6 @@ public class GameMessageFilter extends BaseFilter {
 	@Override
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
 		final HeapBuffer buffer = (HeapBuffer) ctx.getMessage();
-
-		System.out.println(":D");
 		
 		/*
 		 * 
@@ -22,8 +20,6 @@ public class GameMessageFilter extends BaseFilter {
 		if (buffer.remaining() > 1) {
 			int index = buffer.get() & 0xFF;
 			int length = PacketLength.get(index);
-			
-			System.out.println(index + "," + length);
 			
 			/*
 			 * If the length is specified as -1 it means the length is given
