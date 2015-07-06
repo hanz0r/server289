@@ -1,6 +1,6 @@
-package org.hanonator.game.event;
+package org.hanonator.game.event.filter;
 
-import org.hanonator.game.event.DataParser.DataType;
+import org.hanonator.game.event.filter.Filter.DataType;
 
 public class Attribute {
 	

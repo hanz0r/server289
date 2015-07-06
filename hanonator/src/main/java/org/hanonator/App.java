@@ -11,7 +11,7 @@ import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
-import org.hanonator.game.event.Templates;
+import org.hanonator.game.event.filter.Templates;
 import org.hanonator.net.GameMessageBeanFilter;
 import org.hanonator.net.GameMessageFilter;
 
@@ -38,6 +38,9 @@ public class App {
 		SAXReader reader = new SAXReader();
 		Templates.load(reader.read(new File("data/decoders.xml")));
 		
+		/*
+		 * Create the FilterChain
+		 */
 		final FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();
 
 		/*
@@ -76,13 +79,14 @@ public class App {
              * Up and running
              */
     		logger.info("OK");
+    		
+    		/*
+    		 * FIXME
+    		 */
             System.in.read();
         } finally {
-            logger.info("Stopping transport...");
-            // stop the transport
             transport.shutdownNow();
-
-            logger.info("Stopped transport...");
+            logger.info("Stopping transport");
         }
 	}
 }
