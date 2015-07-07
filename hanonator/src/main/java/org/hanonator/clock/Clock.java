@@ -18,6 +18,9 @@ public final class Clock implements Service, Runnable {
 	 */
 	private static final long CYCLE_RATE = 50L;
 	
+	/**
+	 * The logger for this class
+	 */
 	private static final Logger logger = Logger.getLogger(Clock.class.getName());
 	
 	/**
@@ -44,9 +47,10 @@ public final class Clock implements Service, Runnable {
 	public void run() {
 		for (Iterator<ClockWorker> iterator = workers.iterator(); iterator.hasNext(); ) {
 			ClockWorker worker = iterator.next();
-			
 			try {
-			
+				/*
+				 * 
+				 */
 				worker.tick();
 			} catch (ClockException e) {
 				/*

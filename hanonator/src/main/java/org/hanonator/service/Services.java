@@ -25,7 +25,16 @@ public final class Services {
 	 * @param service
 	 */
 	public static void register(Service service) {
-		services.put(service.getClass(), service);
+		Services.register(service, service.getClass());
+	}
+
+	/**
+	 * Registers a server to a given class
+	 * 
+	 * @param service
+	 */
+	public static void register(Service service, Class<? extends Service> c) {
+		services.put(c, service);
 	}
 
 	/**

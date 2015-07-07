@@ -8,6 +8,7 @@ import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.net.GameMessage;
+import org.hanonator.net.Session;
 import org.hanonator.net.util.PacketLength;
 
 /**
@@ -52,6 +53,16 @@ public class GameMessageFilter extends BaseFilter {
 				 * Create the message
 				 */
 				GameMessage message = new GameMessage(index, length, payload);
+				
+				/*
+				 * 
+				 */
+				Session session = (Session) ctx.getAttributes().getAttribute("session");
+				
+				/*
+				 * 
+				 */
+				session.read(message);
 				
 				/*
 				 * If there is still data remaining, rerun the filter, otherwise go to next action
