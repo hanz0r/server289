@@ -1,13 +1,11 @@
-package org.hanonator.net;
+package org.hanonator.net.grizzly;
 
 import org.glassfish.grizzly.AbstractTransformer;
 import org.glassfish.grizzly.TransformationException;
 import org.glassfish.grizzly.TransformationResult;
-import org.glassfish.grizzly.TransformationResult.Status;
 import org.glassfish.grizzly.attributes.AttributeStorage;
-import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.net.util.GameState;
+import org.hanonator.net.GameMessage;
 
 public class ReflectionMessageTransformer extends AbstractTransformer<GameMessage, GameEvent> {
 

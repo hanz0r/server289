@@ -1,4 +1,4 @@
-package org.hanonator.net;
+package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.glassfish.grizzly.filterchain.BaseFilter;
 import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
+import org.hanonator.net.GameMessage;
 import org.hanonator.net.util.PacketLength;
 
 public class GameMessageFilter extends BaseFilter {

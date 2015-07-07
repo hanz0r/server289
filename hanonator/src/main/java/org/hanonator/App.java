@@ -12,8 +12,8 @@ import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
 import org.hanonator.game.event.template.Templates;
-import org.hanonator.net.ConnectionFilter;
-import org.hanonator.net.GameMessageFilter;
+import org.hanonator.net.grizzly.ConnectionFilter;
+import org.hanonator.net.grizzly.GameMessageFilter;
 
 /**
  * Hello world!

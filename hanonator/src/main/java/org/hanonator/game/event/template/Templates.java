@@ -10,7 +10,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hanonator.net.util.PacketLength;
 
-public class Templates {
+public final class Templates {
 
 	private static final Logger logger = Logger.getLogger(Templates.class.getName());
 
@@ -18,6 +18,10 @@ public class Templates {
 	 * Collection of templates
 	 */
 	private static final Map<Integer, Template> templates = new HashMap<>();
+	
+	private Templates() {
+		
+	}
 	
 	/**
 	 * Load all the templates from an xml file
