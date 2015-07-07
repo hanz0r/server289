@@ -1,8 +1,8 @@
 package org.hanonator.processor;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Function;
@@ -24,7 +24,7 @@ public abstract class AbstractProcessor<T> implements Processor<T>,
 	/**
 	 * List of items waiting to be processed
 	 */
-	private final Queue<T> stack = new LinkedList<>();
+	private final Queue<T> stack = new ArrayDeque<>();
 
 	@Override
 	public <R> List<R> process(Function<T, R> function) throws GameException {
@@ -65,7 +65,7 @@ public abstract class AbstractProcessor<T> implements Processor<T>,
 	}
 
 	/**
-	 * 
+	 * The result returned when an item has been processed
 	 * 
 	 * @author user104
 	 */

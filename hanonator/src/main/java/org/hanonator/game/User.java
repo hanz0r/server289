@@ -1,9 +1,7 @@
 package org.hanonator.game;
 
 import org.glassfish.grizzly.Connection;
-import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.GameEventProcessor;
-import org.hanonator.processor.Processor;
 
 public class User {
 
@@ -15,7 +13,7 @@ public class User {
 	/**
 	 * The game event processor
 	 */
-	private final Processor<GameEvent> eventProcessor = new GameEventProcessor(this);
+	private final GameEventProcessor eventProcessor = new GameEventProcessor(this);
 
 	public User(Connection<?> connection) {
 		this.connection = connection;
@@ -34,7 +32,7 @@ public class User {
 		return connection;
 	}
 
-	public Processor<GameEvent> getEventProcessor() {
+	public GameEventProcessor getEventProcessor() {
 		return eventProcessor;
 	}
 

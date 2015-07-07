@@ -10,6 +10,11 @@ import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.net.GameMessage;
 import org.hanonator.net.util.PacketLength;
 
+/**
+ * 
+ * 
+ * @author user104
+ */
 public class GameMessageFilter extends BaseFilter {
 
 	@Override
@@ -36,8 +41,22 @@ public class GameMessageFilter extends BaseFilter {
 			 * Read the payload of the message
 			 */
 			if (buffer.remaining() >= length) {
-				ctx.setMessage(new GameMessage(index, length, buffer.slice()));
-				return ctx.getInvokeAction();
+				Buffer payload = ctx.getMemoryManager().allocate(length);
+				
+				/*
+				 * Read payload
+				 */
+				payload.put(buffer, 0, length);
+				
+				/*
+				 * Create the message
+				 */
+				GameMessage message = new GameMessage(index, length, payload);
+				
+				/*
+				 * If there is still data remaining, rerun the filter, otherwise go to next action
+				 */
+				return buffer.hasRemaining() ? ctx.getRerunFilterAction() : ctx.getInvokeAction();
 			}
 		}
 		return ctx.getStopAction();
@@ -65,10 +84,10 @@ public class GameMessageFilter extends BaseFilter {
 			 * Some of the messages have varying lengths specified as short or byte
 			 */
 			if (message.getLength() == GameMessage.VAR_LENGTH_BYTE) {
-				buffer.put((byte) message.getPayload().capacity());
+				buffer.put((byte) message.getLength());
 			}
 			else if (message.getLength() == GameMessage.VAR_LENGTH_SHORT) {
-				buffer.putShort((short) message.getPayload().capacity());
+				buffer.putShort((short) message.getLength());
 			}
 		}
 		/*
@@ -89,8 +108,6 @@ public class GameMessageFilter extends BaseFilter {
 
 	@Override
 	public void exceptionOccurred(FilterChainContext ctx, Throwable error) {
-		super.exceptionOccurred(ctx, error);
-		
 		error.printStackTrace();
 	}
 

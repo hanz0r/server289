@@ -11,9 +11,11 @@ import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
+import org.hanonator.clock.Clock;
 import org.hanonator.game.event.template.Templates;
 import org.hanonator.net.grizzly.ConnectionFilter;
 import org.hanonator.net.grizzly.GameMessageFilter;
+import org.hanonator.service.Services;
 
 /**
  * Hello world!
@@ -37,6 +39,11 @@ public class App {
 		 */
 		SAXReader reader = new SAXReader();
 		Templates.load(reader.read(new File("data/decoders.xml")));
+		
+		/*
+		 * Register services
+		 */
+		Services.register(new Clock());
 		
 		/*
 		 * Create the FilterChain

@@ -1,5 +1,7 @@
 package org.hanonator.net;
 
+
+@FunctionalInterface
 public interface Transformer<I, O> {
 
 	/**

@@ -39,6 +39,10 @@ public class FilterChainContext {
 		return attributes.get(key);
 	}
 
+	public Object getAttribute(Object key, Object defaultValue) {
+		return attributes.containsKey(key) ? attributes.get(key) : defaultValue;
+	}
+
 	public void setAttribute(String key, Object value) {
 		attributes.put(key, value);
 	}

@@ -13,7 +13,7 @@ public final class Services {
 	/**
 	 * The collection of all services
 	 */
-	private final Map<Class<? extends Service>, ? super Service> services = new HashMap<>();
+	private static final Map<Class<? extends Service>, ? super Service> services = new HashMap<>();
 
 	private Services() {
 		
@@ -24,7 +24,7 @@ public final class Services {
 	 * 
 	 * @param service
 	 */
-	public void register(Service service) {
+	public static void register(Service service) {
 		services.put(service.getClass(), service);
 	}
 
@@ -34,7 +34,7 @@ public final class Services {
 	 * @param c
 	 * @return
 	 */
-	public <T extends Service> T get(Class<T> c) {
+	public static <T extends Service> T get(Class<T> c) {
 		return c.cast(services.get(c));
 	}
 

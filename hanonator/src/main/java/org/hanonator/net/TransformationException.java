@@ -1,6 +1,6 @@
 package org.hanonator.net;
 
-public class TransformationException extends Exception {
+public class TransformationException extends RuntimeException {
 
 	private static final long serialVersionUID = -1593627992447182398L;
 

@@ -1,6 +1,6 @@
 package org.hanonator.net;
 
-import org.glassfish.grizzly.memory.HeapBuffer;
+import org.glassfish.grizzly.Buffer;
 
 public class GameMessage {
 
@@ -9,9 +9,9 @@ public class GameMessage {
 
 	private final int id;
 	private final int length;
-	private final HeapBuffer payload;
+	private final Buffer payload;
 
-	public GameMessage(int id, int length, HeapBuffer payload) {
+	public GameMessage(int id, int length, Buffer payload) {
 		this.id = id;
 		this.length = length;
 		this.payload = payload;
@@ -37,12 +37,12 @@ public class GameMessage {
 		return length;
 	}
 
-	public boolean hasRemaining() {
-		return payload.hasRemaining();
+	public Buffer getPayload() {
+		return payload;
 	}
 
-	public HeapBuffer getPayload() {
-		return payload;
+	public boolean hasRemaining() {
+		return payload.hasRemaining();
 	}
 
 }
