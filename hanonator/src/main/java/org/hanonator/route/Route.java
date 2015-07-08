@@ -3,16 +3,23 @@ package org.hanonator.route;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * Represents a route from a source to a destination position
+ * 
+ * @author Red
+ */
 public class Route implements Iterable<Point>, Supplier<Stream<Point>> {
 
 	/**
 	 * The collection of points in the route
 	 */
-	private final List<Point> route = new ArrayList<Point>();
+	private final Queue<Point> route = new LinkedList<Point>();
 
 	/**
 	 * 
