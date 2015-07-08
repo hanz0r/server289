@@ -43,7 +43,7 @@ public class Dijkstra2RouteFinder implements RouteFinder {
 
 	@Override
 	public Route findRoute(Matrix matrix, Point source, Point destination) throws RouteNotFoundException {
-		Route route = new Route(source);
+		Route route = new Route();
 		
 		return null;
 	}
