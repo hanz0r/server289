@@ -1,4 +1,4 @@
-package org.hannes.route;
+package org.hanonator.route;
 
 public class RouteNotFoundException extends Exception {
 
