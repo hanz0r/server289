@@ -1,6 +1,6 @@
 package org.hanonator.net;
 
-import org.glassfish.grizzly.Buffer;
+import java.nio.ByteBuffer;
 
 public class GameMessage {
 
@@ -9,12 +9,17 @@ public class GameMessage {
 
 	private final int id;
 	private final int length;
-	private final Buffer payload;
+	private final ByteBuffer payload;
 
-	public GameMessage(int id, int length, Buffer payload) {
+	public GameMessage(int id, int length, ByteBuffer payload) {
 		this.id = id;
 		this.length = length;
 		this.payload = payload;
+	}
+
+	@Override
+	public String toString() {
+		return "GameMessage [id=" + id + ", length=" + length + ", payload=" + payload + "]";
 	}
 
 	public byte get() {
@@ -37,7 +42,7 @@ public class GameMessage {
 		return length;
 	}
 
-	public Buffer getPayload() {
+	public ByteBuffer getPayload() {
 		return payload;
 	}
 

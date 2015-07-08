@@ -1,6 +1,7 @@
 package org.hanonator.net.grizzly;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import org.glassfish.grizzly.Buffer;
 import org.glassfish.grizzly.filterchain.BaseFilter;
@@ -42,12 +43,12 @@ public class GameMessageFilter extends BaseFilter {
 			 * Read the payload of the message
 			 */
 			if (buffer.remaining() >= length) {
-				Buffer payload = ctx.getMemoryManager().allocate(length);
+				ByteBuffer payload = ByteBuffer.allocate(length);
 				
 				/*
 				 * Read payload
 				 */
-				payload.put(buffer, 0, length);
+				 buffer.get(payload);
 				
 				/*
 				 * Create the message
@@ -55,12 +56,12 @@ public class GameMessageFilter extends BaseFilter {
 				GameMessage message = new GameMessage(index, length, payload);
 				
 				/*
-				 * 
+				 * Get the session
 				 */
-				Session session = (Session) ctx.getAttributes().getAttribute("session");
+				Session session = (Session) ctx.getConnection().getAttributes().getAttribute("session");
 				
 				/*
-				 * 
+				 * Offer the message to be read by the session
 				 */
 				session.read(message);
 				

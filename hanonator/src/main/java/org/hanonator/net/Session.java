@@ -1,5 +1,7 @@
 package org.hanonator.net;
 
+import org.hanonator.game.GameException;
+
 public interface Session {
 
 	/**
@@ -15,5 +17,12 @@ public interface Session {
 	 * @param object
 	 */
 	public abstract void write(Object object);
+
+	/**
+	 * Pushes an exception to the player
+	 * 
+	 * @param ex
+	 */
+	public abstract void push(GameException ex);
 
 }
