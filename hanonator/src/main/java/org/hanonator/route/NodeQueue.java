@@ -58,7 +58,6 @@ public class NodeQueue implements Iterable<Node>, Supplier<Stream<Node>> {
 	 * @return
 	 */
 	public List<Node> adjacent() {
-		// return adjacent(peek());
 		return adjacent(head);
 	}
 
@@ -79,14 +78,12 @@ public class NodeQueue implements Iterable<Node>, Supplier<Stream<Node>> {
 	public Node peek() {
 		head = nodes.stream().min(Node::compareTo).get();
 		return head;
-		// return nodes.stream().min(Node::compareTo).get();
 	}
 
 	/**
 	 * Removes the current node
 	 */
 	public void release() {
-		// nodes.remove(peek());
 		nodes.remove(head);
 	}
 
