@@ -16,6 +16,11 @@ public class Node implements Comparable<Node> {
 	 * Weight of the node
 	 */
 	private int weight;
+	
+	/**
+	 * Indicates this node has been visited
+	 */
+	private boolean closed;
 
 	/**
 	 * Create a node with the default weight (int.MAX_VALUE)
@@ -117,6 +122,14 @@ public class Node implements Comparable<Node> {
 
 	public void setLink(Node link) {
 		this.link = link;
+	}
+
+	public boolean closed() {
+		return closed;
+	}
+
+	public void close() {
+		this.closed = true;
 	}
 
 	/**

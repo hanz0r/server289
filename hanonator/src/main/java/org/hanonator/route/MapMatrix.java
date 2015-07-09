@@ -28,7 +28,7 @@ public class MapMatrix implements Matrix {
 	 */
 	public MapMatrix(int[] matrix, int width) {
 		for (int index = 0; index < matrix.length; index++) {
-			points.put(new Point(index / width, index % width), Tile.values()[matrix[index]]);
+			points.put(new Point(index % width, index / width), Tile.values()[matrix[index]]);
 		}
 	}
 

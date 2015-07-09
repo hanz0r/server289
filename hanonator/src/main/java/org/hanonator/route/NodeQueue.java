@@ -19,6 +19,11 @@ public class NodeQueue implements Iterable<Node>, Supplier<Stream<Node>> {
 	 * The collection of nodes mapped by their point on the matrix
 	 */
 	private final List<Node> nodes = new ArrayList<>();
+	
+	/**
+	 * The head of the queue
+	 */
+	private Node head;
 
 	/**
 	 * Creates a NodeMap for the given collection of nodes. It is assumed
@@ -31,12 +36,39 @@ public class NodeQueue implements Iterable<Node>, Supplier<Stream<Node>> {
 	}
 
 	/**
+	 * Sees if the given node is present in the stack
+	 * @param node
+	 * @return
+	 */
+	public boolean contains(Node node) {
+		return nodes.contains(node);
+	}
+
+	/**
+	 * Adds a node to the tail of the stack
+	 * @param node
+	 */
+	public void offer(Node node) {
+		nodes.add(node);
+	}
+
+	/**
 	 * Gets a list of all the neighbouring nodes
 	 * 
 	 * @return
 	 */
 	public List<Node> adjacent() {
-		return nodes.stream().filter(n -> n.adjacent(peek())).collect(Collectors.toList());
+		// return adjacent(peek());
+		return adjacent(head);
+	}
+
+	/**
+	 * Gets a list of all the neighbouring nodes
+	 * 
+	 * @return
+	 */
+	public List<Node> adjacent(Node node) {
+		return nodes.stream().filter(node::adjacent).collect(Collectors.toList());
 	}
 
 	/**
@@ -45,14 +77,25 @@ public class NodeQueue implements Iterable<Node>, Supplier<Stream<Node>> {
 	 * @return
 	 */
 	public Node peek() {
-		return nodes.stream().min(Node::compareTo).get();
+		head = nodes.stream().min(Node::compareTo).get();
+		return head;
+		// return nodes.stream().min(Node::compareTo).get();
 	}
 
 	/**
 	 * Removes the current node
 	 */
 	public void release() {
-		nodes.remove(peek());
+		// nodes.remove(peek());
+		nodes.remove(head);
+	}
+
+	/**
+	 * Release a given node
+	 * @param node
+	 */
+	public void release(Node node) {
+		nodes.remove(node);
 	}
 
 	/**

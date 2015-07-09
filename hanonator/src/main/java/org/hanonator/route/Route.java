@@ -1,11 +1,9 @@
 package org.hanonator.route;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -19,7 +17,7 @@ public class Route implements Iterable<Point>, Supplier<Stream<Point>> {
 	/**
 	 * The collection of points in the route
 	 */
-	private final Queue<Point> route = new LinkedList<Point>();
+	private final Deque<Point> route = new LinkedList<Point>();
 
 	/**
 	 * 
@@ -36,7 +34,7 @@ public class Route implements Iterable<Point>, Supplier<Stream<Point>> {
 	 * @return
 	 */
 	public static Route walk(Node node) {
-		return walk(node, new ArrayList<>());
+		return walk(node, new LinkedList<>());
 	}
 
 	/**
@@ -46,11 +44,11 @@ public class Route implements Iterable<Point>, Supplier<Stream<Point>> {
 	 * @param chain
 	 * @return
 	 */
-	private static Route walk(Node node, List<Point> chain) {
+	private static Route walk(Node node, Deque<Point> chain) {
 		/*
 		 * Add the node's point
 		 */
-		chain.add(node.getPoint());
+		chain.addFirst(node.getPoint());
 		
 		/*
 		 * If there is no link left in the chain, return route

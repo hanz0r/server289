@@ -84,7 +84,10 @@ public class DijkstraRouteFinder implements RouteFinder {
 			nodes.release();
 		}
 		
-		throw new RouteNotFoundException("No suitable route has been found");
+		/*
+		 * If end of method is reached, no suitable path has been found
+		 */
+		throw new RouteNotFoundException("route to destination not found");
 	}
 
 }
