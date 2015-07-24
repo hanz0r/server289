@@ -19,6 +19,8 @@ public class AppTest extends TestCase {
 
 	public static final int ITERATIONS = 50_000;
 	
+	private static final int MATRIX_WIDTH = 9;
+	
 	private static final int[] TEST_MATRIX = {
 			0, 1, 1, 0, 1, 0, 0, 0, 0,
 			0, 0, 1, 0, 0, 1, 0, 1, 0,
@@ -53,7 +55,7 @@ public class AppTest extends TestCase {
 	 */
 	public void testApp() {
 		try {
-			Matrix matrix = new MapMatrix(TEST_MATRIX, 9);
+			Matrix matrix = new MapMatrix(TEST_MATRIX, MATRIX_WIDTH);
 			
 			long total = calculateTimeTaken(new DijkstraRouteFinder(), matrix, ITERATIONS);
 			System.out.println("Dijkstra sum:" + (total / 1_000_000) + "ms avg: " + (total / ITERATIONS) + "ns (0," + (total / ITERATIONS / 10_000) + "ms)");
@@ -64,7 +66,6 @@ public class AppTest extends TestCase {
 		} catch (RouteNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	private long calculateTimeTaken(RouteFinder finder, Matrix matrix, int iterations) throws RouteNotFoundException {

@@ -1,7 +1,7 @@
 package org.hanonator.game.event;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.hanonator.net.Session;
+import org.hanonator.util.Attributes;
 
 /**
  * An event
@@ -16,9 +16,9 @@ public class GameEvent {
 	private final int index;
 
 	/**
-	 * THe map of attributes
+	 * The attributes of this game event
 	 */
-	private final Map<String, Object> attributes = new HashMap<>();
+	private final Attributes attributes = new Attributes();
 
 	public GameEvent(int index) {
 		this.index = index;
@@ -28,17 +28,21 @@ public class GameEvent {
 		return index;
 	}
 	
-	public Object getAttribute(String name) {
+	public <T> T getAttribute(String name) {
 		return attributes.get(name);
 	}
 	
 	public void setAttribute(String name, Object object) {
-		this.attributes.put(name, object);
+		this.attributes.set(name, object);
+	}
+
+	public Attributes getAttributes() {
+		return attributes;
 	}
 
 	@Override
 	public String toString() {
-		return "GameEvent [index=" + index + ", attributes=" + attributes.entrySet().size() + "]";
+		return "GameEvent [index=" + index + ", attributes=" + attributes.size() + "]";
 	}
 
 }

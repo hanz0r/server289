@@ -25,8 +25,28 @@ public class Point implements Comparable<Point> {
 	 * @param dir
 	 * @return
 	 */
+	public Point offset(Direction dir, int distance) {
+		return new Point(x + dir.getX() * distance, y + dir.getY() * distance);
+	}
+
+	/**
+	 * Creates a new Point object with offset by the values specified in Direction
+	 * 
+	 * @param dir
+	 * @return
+	 */
 	public Point offset(Direction dir) {
-		return new Point(x + dir.getX(), y + dir.getY());
+		return offset(dir, 1);
+	}
+
+	/**
+	 * Calculates the Manhattan distance between this point and the given other point
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public int distance(Point other) {
+		return Math.abs(other.x - x) + Math.abs(other.y - y);
 	}
 
 	@Override

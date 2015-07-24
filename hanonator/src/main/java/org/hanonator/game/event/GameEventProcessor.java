@@ -1,7 +1,11 @@
 package org.hanonator.game.event;
 
-import org.hanonator.game.User;
+import java.util.List;
+
+import org.hanonator.game.GameException;
 import org.hanonator.net.GameMessage;
+import org.hanonator.net.transform.MessageTransformer;
+import org.hanonator.net.transform.Transformer;
 import org.hanonator.processor.AsynchronousProcessor;
 
 /**
@@ -9,20 +13,21 @@ import org.hanonator.processor.AsynchronousProcessor;
  * 
  * @author user104
  */
-public class GameEventProcessor extends AsynchronousProcessor<GameMessage> {
+public final class GameEventProcessor extends AsynchronousProcessor<GameMessage> {
 
 	/**
-	 * The user object
+	 * The default transformer that will attempt to transform the message into an event
 	 */
-	private final User user;
-	
+	public static final Transformer<GameMessage, GameEvent> DEFAULT_EVENT_TRANSFORMER = new MessageTransformer();
+
 	/**
-	 * Creates a game processor for a given user
+	 * Transforms all the messages into events with the use of a transformer class
 	 * 
-	 * @param user
+	 * @param transformer
+	 * @return
 	 */
-	public GameEventProcessor(User user) {
-		this.user = user;
+	public List<GameEvent> process(Transformer<GameMessage, GameEvent> transformer) throws GameException {
+		return super.process(m -> transformer.transform(m));
 	}
 
 }

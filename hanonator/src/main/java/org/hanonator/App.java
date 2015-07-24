@@ -5,16 +5,14 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
 import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
-import org.hanonator.clock.Clock;
-import org.hanonator.game.event.template.Templates;
+import org.hanonator.game.event.filter.impl.Templates;
+import org.hanonator.game.event.listener.Listeners;
 import org.hanonator.net.grizzly.ConnectionFilter;
-import org.hanonator.net.grizzly.GameMessageFilter;
+import org.hanonator.net.grizzly.GameFilter;
 import org.hanonator.service.Services;
 
 /**
@@ -33,17 +31,19 @@ public class App {
 	 */
 	private static final SocketAddress ADDRESS = new InetSocketAddress("localhost", 43594);
 
-	public static void main(String[] args) throws DocumentException, Exception {
+	/**
+	 * Program entry point 
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws Exception {
 		/*
 		 * Loading decoders
 		 */
-		SAXReader reader = new SAXReader();
-		Templates.load(reader.read(new File("data/decoders.xml")));
-		
-		/*
-		 * Register services
-		 */
-		Services.register(new Clock());
+		Templates.load(new File("data/message-decoders.xml"));
+		Services.load(new File("data/services.xml")).forEach(s -> s.start());
+		Listeners.load(new File("data/event-listeners.xml"));
 		
 		/*
 		 * Create the FilterChain
@@ -63,10 +63,10 @@ public class App {
 		/*
 		 * Decode the game packets
 		 */
-		filterChainBuilder.add(new GameMessageFilter());
+		filterChainBuilder.add(new GameFilter());
 		
 		/*
-		 * Parse into events
+		 * Parse messages into events
 		 */
 		// filterChainBuilder.add(new GameMessageBeanFilter());
 
@@ -97,8 +97,10 @@ public class App {
     		 */
             System.in.read();
         } finally {
+        	Services.shutdownNow();
             transport.shutdownNow();
             logger.info("Stopping transport");
         }
 	}
+
 }

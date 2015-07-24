@@ -66,9 +66,10 @@ public abstract class AbstractProcessor<T> implements Processor<T>,
 
 	/**
 	 * The result returned when an item has been processed
-	 * 
+	 *
 	 * @author user104
 	 */
+	@Deprecated
 	public static enum ProcessResult {
 		/**
 		 * Indicates the processor needs to retain the element

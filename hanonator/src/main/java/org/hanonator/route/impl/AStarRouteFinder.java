@@ -83,7 +83,7 @@ public class AStarRouteFinder implements RouteFinder {
 				/*
 				 * Calculate the tentative weight
 				 */
-				int weight = next.getWeight() + 1;
+				int weight = next.getWeight() + 1 + destination.distance(neighbour.getPoint());
 				
 				/*
 				 * If the neighbour is walkable or the neighbour's weight is larger than the tentative weight

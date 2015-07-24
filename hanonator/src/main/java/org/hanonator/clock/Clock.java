@@ -8,8 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.hanonator.clock.ClockWorker.Result;
 import org.hanonator.service.Service;
-import org.hanonator.service.ServiceException;
 
 public final class Clock implements Service, Runnable {
 
@@ -34,41 +34,67 @@ public final class Clock implements Service, Runnable {
 	private final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
 	@Override
-	public void start() throws ServiceException {
+	public void start() {
 		service.scheduleAtFixedRate(this, CYCLE_RATE, CYCLE_RATE, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
-	public void stop() throws ServiceException {
-		service.shutdown();
+	public void stop() {
+		service.shutdownNow();
 	}
 
 	@Override
 	public void run() {
-		for (Iterator<ClockWorker> iterator = workers.iterator(); iterator.hasNext(); ) {
-			ClockWorker worker = iterator.next();
-			try {
-				/*
-				 * 
-				 */
-				worker.tick();
-			} catch (ClockException e) {
-				/*
-				 * Handle the exception higher up the stack
-				 */
-				worker.handleException(this, e);
-				
-				/*
-				 * Remove the clock worker to prevent further errors
-				 */
-				iterator.remove();
-				
-				/*
-				 * output
-				 */
-				logger.info("deregistered clockworker " + worker);
+		synchronized(workers) {
+			for (Iterator<ClockWorker> iterator = workers.iterator(); iterator.hasNext(); ) {
+				ClockWorker worker = iterator.next();
+				try {
+					/*
+					 * Make the worker do his thing. If anything other than reschedule result is
+					 * returned, remove it from the active workers
+					 */
+					if (worker.tick() != Result.RESCHEDULE) {
+						iterator.remove();
+					}
+				} catch (ClockException e) {
+					/*
+					 * Handle the exception higher up the stack
+					 */
+					worker.handleException(this, e);
+					
+					/*
+					 * Remove the clock worker to prevent further errors
+					 */
+					iterator.remove();
+					
+					/*
+					 * output
+					 */
+					logger.info("deregistered clockworker " + worker);
+				}
 			}
 		}
+	}
+
+	/**
+	 * Submit a worker to the collection of workers
+	 * @param worker
+	 */
+	public void submit(ClockWorker worker) {
+		synchronized (workers) {
+			workers.add(worker);
+		}
+	}
+	
+	/**
+	 * submit a single use runnable to be executed next cycle
+	 * @param runnable
+	 */
+	public void submit(Runnable runnable) {
+		this.submit(() -> {
+			runnable.run();
+			return Result.STOP;
+		});
 	}
 
 }

@@ -10,6 +10,7 @@ import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.net.GameMessage;
 import org.hanonator.net.Session;
+import org.hanonator.net.Session.State;
 import org.hanonator.net.util.PacketLength;
 
 /**
@@ -17,15 +18,31 @@ import org.hanonator.net.util.PacketLength;
  * 
  * @author user104
  */
-public class GameMessageFilter extends BaseFilter {
+public class GameFilter extends BaseFilter {
 
 	@Override
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
 		final HeapBuffer buffer = (HeapBuffer) ctx.getMessage();
 		
-		if (buffer.remaining() > 1) {
-			int index = buffer.get() & 0xFF;
-			int length = PacketLength.get(index);
+		/*
+		 * Get the session
+		 */
+		Session session = (Session) ctx.getConnection().getAttributes().getAttribute("session");
+		
+		/*
+		 * If there is no session, discard all data
+		 */
+		if (session == null) {
+			buffer.rewind();
+			return ctx.getStopAction();
+		}
+		
+		/*
+		 * As long as there is data, keep keep reading, I keep keep reading love.
+		 */
+		if (buffer.hasRemaining()) {
+			int index = session.getState() == State.CONNECTED ? -1 : buffer.get() & 0xFF;
+			int length = session.getState() == State.CONNECTED ? buffer.remaining() : PacketLength.get(index);
 			
 			/*
 			 * If the length is specified as -1 it means the length is given
@@ -56,11 +73,6 @@ public class GameMessageFilter extends BaseFilter {
 				GameMessage message = new GameMessage(index, length, payload);
 				
 				/*
-				 * Get the session
-				 */
-				Session session = (Session) ctx.getConnection().getAttributes().getAttribute("session");
-				
-				/*
 				 * Offer the message to be read by the session
 				 */
 				session.read(message);
@@ -76,48 +88,51 @@ public class GameMessageFilter extends BaseFilter {
 
 	@Override
 	public NextAction handleWrite(FilterChainContext ctx) throws IOException {
-		final GameMessage message = (GameMessage) ctx.getMessage();
-		
-		/*
-		 * Create the buffer
-		 */
-		Buffer buffer = ctx.getMemoryManager().allocate(message.getPayload().capacity() + 3);
-		
-		/*
-		 * if opcode is -1, send data without header
-		 */
-		if (message.getId() != -1) {
-			/*
-			 * First byte should be the opcode
-			 */
-			buffer.put((byte) message.getId());
+		if (ctx.getMessage() instanceof GameMessage) {
+			final GameMessage message = (GameMessage) ctx.getMessage();
 			
 			/*
-			 * Some of the messages have varying lengths specified as short or byte
+			 * Create the buffer
 			 */
-			if (message.getLength() == GameMessage.VAR_LENGTH_BYTE) {
-				buffer.put((byte) message.getLength());
+			Buffer buffer = ctx.getMemoryManager().allocate(message.getPayload().capacity() + 3);
+			
+			/*
+			 * if opcode is -1, send data without header
+			 */
+			if (message.getId() != -1) {
+				/*
+				 * First byte should be the opcode
+				 */
+				buffer.put((byte) message.getId());
+				
+				/*
+				 * Some of the messages have varying lengths specified as short or byte
+				 */
+				if (message.getLength() == GameMessage.VAR_LENGTH_BYTE) {
+					buffer.put((byte) message.getLength());
+				}
+				else if (message.getLength() == GameMessage.VAR_LENGTH_SHORT) {
+					buffer.putShort((short) message.getLength());
+				}
 			}
-			else if (message.getLength() == GameMessage.VAR_LENGTH_SHORT) {
-				buffer.putShort((short) message.getLength());
-			}
+			
+			/*
+			 * Put the payload in the buffer
+			 */
+			buffer.put(message.getPayload());
+			
+			/*
+			 * Write the buffer
+			 */
+			ctx.write(buffer.flip());
 		}
-		/*
-		 * Put the payload in the buffer
-		 */
-		buffer.put(message.getPayload());
-		
-		/*
-		 * Set the filterchain's message as the buffer
-		 */
-		ctx.setMessage(buffer.flip());
 		
 		/*
 		 * Go to the next filter
 		 */
 		return ctx.getInvokeAction();
 	}
-
+	
 	@Override
 	public void exceptionOccurred(FilterChainContext ctx, Throwable error) {
 		error.printStackTrace();

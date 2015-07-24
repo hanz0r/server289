@@ -3,14 +3,13 @@ package org.hanonator.net.util;
 /**
  * 
  * @author user104
- *
  */
-public class PacketLength {
+public final class PacketLength {
 
 	/**
-	 * 
+	 * The lengths of each known packet
 	 */
-	private static final int[] lengths = new int[255];
+	private static final int[] lengths = new int[256];
 
 	/**
 	 * 

@@ -1,4 +1,4 @@
-package org.hanonator.net;
+package org.hanonator.net.transform;
 
 
 @FunctionalInterface

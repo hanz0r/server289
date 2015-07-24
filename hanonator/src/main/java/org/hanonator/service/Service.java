@@ -7,7 +7,7 @@ public interface Service {
 	 * 
 	 * @throws ServiceException
 	 */
-	public abstract void start() throws ServiceException;
+	public abstract void start();
 
 	/**
 	 * Stops the service. Called upon application shutdown and when the
@@ -15,6 +15,6 @@ public interface Service {
 	 * 
 	 * @throws ServiceException
 	 */
-	public abstract void stop() throws ServiceException;
+	public abstract void stop();
 
 }

@@ -1,7 +1,17 @@
 package org.hanonator.game.entity;
 
-public abstract class Entity {
+import org.hanonator.util.Attributes;
 
+public abstract class Entity {
+	
+	/**
+	 * The attributes
+	 */
+	private final Attributes attributes = new Attributes();
+
+	/**
+	 * The uuid
+	 */
 	private final int id;
 
 	public Entity(int id) {
@@ -10,6 +20,10 @@ public abstract class Entity {
 
 	public int getId() {
 		return id;
+	}
+
+	public Attributes getAttributes() {
+		return attributes;
 	}
 
 }

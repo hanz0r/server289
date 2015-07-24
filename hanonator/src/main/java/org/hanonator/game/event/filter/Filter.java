@@ -1,8 +1,8 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
-import org.hanonator.game.User;
 import org.hanonator.net.GameMessage;
+import org.hanonator.net.Session;
 
 @FunctionalInterface
 public interface Filter {
@@ -19,8 +19,8 @@ public interface Filter {
 	 * 
 	 * @param throwable
 	 */
-	default void handleException(GameException exception, GameMessage message, User user) {
-		user.push(exception);
+	default void handleException(GameException exception, GameMessage message, Session session) {
+		session.push(exception);
 	}
 
 	/**
@@ -28,7 +28,7 @@ public interface Filter {
 	 * @author user104
 	 */
 	public static enum FilterResult {
-		SUCCESS, CANCEL, REWIND; 
+		SUCCESS, STOP, REWIND; 
 	}
 
 }

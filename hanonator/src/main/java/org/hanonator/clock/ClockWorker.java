@@ -11,7 +11,7 @@ public interface ClockWorker {
 	 * 
 	 * @throws Exception
 	 */
-	public abstract void tick() throws ClockException;
+	public abstract Result tick() throws ClockException;
 	
 	/**
 	 * Handle the exceptions thrown by the clock
@@ -36,7 +36,7 @@ public interface ClockWorker {
 		/**
 		 * Prevent this task from being executed again
 		 */
-		CANCEL,
+		STOP,
 		
 		/**
 		 * Abort all running tasks and shut down the clock service

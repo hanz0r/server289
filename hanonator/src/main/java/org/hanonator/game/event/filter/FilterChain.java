@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hanonator.game.GameException;
-import org.hanonator.game.User;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.Filter.FilterResult;
 import org.hanonator.net.GameMessage;
@@ -32,15 +31,34 @@ public class FilterChain implements Iterable<Filter> {
 	 * @param user
 	 * @throws GameException
 	 */
-	public void process(GameMessage message, User user) throws GameException {
-		FilterChainContext context = new FilterChainContext(user, message, new GameEvent(message.getId()));
-		
+	public GameEvent process(GameMessage message) throws GameException {
+		FilterChainContext context = new FilterChainContext(message, new GameEvent(message.getId()));
+		try {
+		/*
+		 * Apply all of the filters
+		 */
 		for (Iterator<Filter> iterator = filters.iterator(); iterator.hasNext(); ) {
 			FilterResult result = iterator.next().filter(context);
-			if (result == FilterResult.CANCEL) {
+			
+			/*
+			 * Stop the filterchain if a filter asks to stop
+			 */
+			if (result == FilterResult.STOP) {
 				break;
 			}
+			
+			/*
+			 * Rewind the filterchain if the filter asks for it
+			 */
+			else if (result == FilterResult.REWIND) {
+				iterator = filters.iterator();
+			}
 		}
+		}catch (Exception ex) { ex.printStackTrace(); }
+		/*
+		 * Return the created event
+		 */
+		return context.getEvent();
 	}
 	
 	@Override

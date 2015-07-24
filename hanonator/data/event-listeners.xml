@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<listeners>
+	<listener listen-id="-1" action="org.hanonator.game.event.listener.LoginEventListener" />
+</listeners>

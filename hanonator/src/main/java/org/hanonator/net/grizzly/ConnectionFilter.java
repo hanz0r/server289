@@ -6,8 +6,11 @@ import java.util.logging.Logger;
 import org.glassfish.grizzly.filterchain.BaseFilter;
 import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
-import org.hanonator.game.User;
+import org.hanonator.game.GameService;
 import org.hanonator.net.Session;
+import org.hanonator.net.Sessions;
+import org.hanonator.service.Services;
+import org.hanonator.util.Attributes;
 
 public class ConnectionFilter extends BaseFilter {
 
@@ -18,12 +21,18 @@ public class ConnectionFilter extends BaseFilter {
 
 	@Override
 	public NextAction handleAccept(FilterChainContext ctx) throws IOException {
-		logger.info("connection accepted from " + ctx.getConnection().getPeerAddress());
+		logger.info("connection accepted " + ctx.getConnection());
+		
+		/*
+		 * Create the attributes required to create a new session
+		 */
+		Attributes attributes = new Attributes();
+		attributes.set("connection", ctx.getConnection());
 		
 		/*
 		 * Create session
 		 */
-		Session session = new User(ctx.getConnection());
+		Session session = Sessions.create(attributes); //new User(ctx.getConnection());
 		
 		/*
 		 * Add the session to the attributes
@@ -31,15 +40,32 @@ public class ConnectionFilter extends BaseFilter {
 		ctx.getConnection().getAttributes().setAttribute("session", session);
 		
 		/*
+		 * Register the connection
+		 */
+		GameService service = Services.get(GameService.class);
+		service.register(ctx.getConnection());
+		
+		/*
 		 * Let superclass handle the next action
 		 */
-		return super.handleConnect(ctx);
+		return ctx.getInvokeAction();
 	}
 
 	@Override
 	public NextAction handleClose(FilterChainContext ctx) throws IOException {
-		logger.info("connection closed at " + ctx.getConnection().getPeerAddress());
-		return super.handleClose(ctx);
+		/*
+		 * Remove the connection
+		 */
+		GameService service = Services.get(GameService.class);
+		if (ctx.getConnection() != null && service != null) {
+			service.remove(ctx.getConnection());
+		}
+		
+		/*
+		 * Logger
+		 */
+		logger.info("connection closed " + ctx.getConnection());
+		return ctx.getInvokeAction();
 	}
 
 }
