@@ -19,7 +19,7 @@ public interface Filter {
 	 * 
 	 * @param throwable
 	 */
-	default void handleException(GameException exception, GameMessage message, Session session) {
+	default void handleException(GameException exception, GameMessage message, Session<?> session) {
 		session.push(exception);
 	}
 

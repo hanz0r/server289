@@ -1,4 +1,4 @@
-package org.hanonator.net.transform;
+package org.hanonator.net.transformer;
 
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
@@ -20,7 +20,7 @@ public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
 			 * If the filterchain exists, use it and apply the filterchain 
 			 */
 			if (filterchain != null) {
-				return filterchain.process(input);
+				return filterchain.apply(input);
 			}
 			
 			/*
@@ -28,7 +28,7 @@ public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
 			 */
 			else {
 				GameEvent event = new GameEvent(input.getId());
-				event.getAttributes().set("payload", input.getPayload());
+				event.getAttributes().set("payload", input.getPayload().flip());
 				return event;
 			}
 		} catch (GameException ex) {

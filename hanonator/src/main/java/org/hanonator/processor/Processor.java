@@ -1,24 +1,23 @@
 package org.hanonator.processor;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
 import org.hanonator.game.GameException;
 
 /**
  * 
- * @author user104
- *
- * @param <T>
+ * 
+ * @author Red
  */
 @FunctionalInterface
 public interface Processor<T> {
 
 	/**
-	 * Process elements
 	 * 
-	 * @throws GameException
+	 * @param collection
+	 * @return
 	 */
-	public abstract <R> List<R> process(Function<T, R> function) throws GameException;
+	public abstract <R> List<R> process(Collection<T> collection) throws GameException;
 
 }

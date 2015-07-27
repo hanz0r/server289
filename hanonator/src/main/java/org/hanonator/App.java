@@ -11,7 +11,6 @@ import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
 import org.hanonator.game.event.filter.impl.Templates;
 import org.hanonator.game.event.listener.Listeners;
-import org.hanonator.net.grizzly.ConnectionFilter;
 import org.hanonator.net.grizzly.GameFilter;
 import org.hanonator.service.Services;
 
@@ -49,11 +48,6 @@ public class App {
 		 * Create the FilterChain
 		 */
 		final FilterChainBuilder filterChainBuilder = FilterChainBuilder.stateless();
-		
-		/*
-		 * Handle the connections
-		 */
-		filterChainBuilder.add(new ConnectionFilter());
 
 		/*
 		 * Handles basic transport

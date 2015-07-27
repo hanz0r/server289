@@ -31,7 +31,7 @@ public class FilterChain implements Iterable<Filter> {
 	 * @param user
 	 * @throws GameException
 	 */
-	public GameEvent process(GameMessage message) throws GameException {
+	public GameEvent apply(GameMessage message) throws GameException {
 		FilterChainContext context = new FilterChainContext(message, new GameEvent(message.getId()));
 		try {
 		/*

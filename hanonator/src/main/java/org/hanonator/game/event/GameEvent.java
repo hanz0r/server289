@@ -1,6 +1,5 @@
 package org.hanonator.game.event;
 
-import org.hanonator.net.Session;
 import org.hanonator.util.Attributes;
 
 /**

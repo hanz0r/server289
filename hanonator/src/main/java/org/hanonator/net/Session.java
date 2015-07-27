@@ -1,7 +1,9 @@
 package org.hanonator.net;
 
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.GameEventProcessor;
+import org.hanonator.game.event.GameEvent;
+import org.hanonator.net.channel.Channel;
+import org.hanonator.processor.AsynchronousProcessorW;
 import org.hanonator.util.Attributes;
 
 /**
@@ -9,7 +11,7 @@ import org.hanonator.util.Attributes;
  * 
  * @author Red
  */
-public abstract class Session {
+public class Session<T> {
 	
 	/**
 	 * The state of the session. By default it is connected
@@ -22,30 +24,33 @@ public abstract class Session {
 	private final Attributes attributes = new Attributes();
 
 	/**
-	 * The game event processor
+	 * The processor for game events
+	 * TODO: Fully implement this when the server runs too slow with processing packets when received
 	 */
-	private final GameEventProcessor eventProcessor = new GameEventProcessor();
-	
+	private final AsynchronousProcessorW<GameEvent> eventProcessor = new AsynchronousProcessorW<>();
+
 	/**
-	 * Reads object
-	 * 
-	 * @param object
+	 * The channel for this session
 	 */
-	public abstract void read(Object object);
-	
+	private final Channel<T> channel;
+
 	/**
-	 * Writes object
+	 * The session
 	 * 
-	 * @param object
+	 * @param channel
 	 */
-	public abstract void write(Object object);
+	public Session(Channel<T> channel) {
+		this.channel = channel;
+	}
 
 	/**
 	 * Pushes an exception to the player
 	 * 
 	 * @param ex
 	 */
-	public abstract void push(GameException ex);
+	public void push(GameException ex) {
+		ex.printStackTrace();
+	}
 	
 	/**
 	 * Get the attributes for this session
@@ -69,17 +74,25 @@ public abstract class Session {
 	 * @param state
 	 * @return
 	 */
-	public Session setState(State state) {
+	public void setState(State state) {
 		this.state = state;
-		return this;
 	}
 
 	/**
 	 * Get the game processor 
 	 * @return
 	 */
-	public GameEventProcessor getEventProcessor() {
+	public AsynchronousProcessorW<GameEvent> getEventProcessor() {
 		return eventProcessor;
+	}
+
+	/**
+	 * Gets the channel
+	 * 
+	 * @return
+	 */
+	public Channel<T> channel() {
+		return channel;
 	}
 
 	/**

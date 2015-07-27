@@ -14,14 +14,14 @@ public interface EventListener<T extends GameEvent> {
 	 * @param event
 	 * @throws GameException
 	 */
-	public abstract void listen(Session session, T event) throws GameException;
+	public abstract void listen(Session<?> session, T event) throws GameException;
 
 	/**
 	 * Called when an exception occurs in listen()
 	 * @param session
 	 * @param ex
 	 */
-	default void exceptionOccured(Session session, GameException ex) {
+	default void exceptionOccured(Session<?> session, GameException ex) {
 		session.push(ex);
 	}
 
