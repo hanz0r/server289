@@ -3,7 +3,8 @@ package org.hanonator.net;
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.net.channel.Channel;
-import org.hanonator.processor.AsynchronousProcessorW;
+import org.hanonator.processor.AsynchronousProcessor;
+import org.hanonator.processor.Processor;
 import org.hanonator.util.Attributes;
 
 /**
@@ -27,7 +28,7 @@ public class Session<T> {
 	 * The processor for game events
 	 * TODO: Fully implement this when the server runs too slow with processing packets when received
 	 */
-	private final AsynchronousProcessorW<GameEvent> eventProcessor = new AsynchronousProcessorW<>();
+	private final Processor<GameEvent, GameEvent> eventProcessor;
 
 	/**
 	 * The channel for this session
@@ -39,8 +40,9 @@ public class Session<T> {
 	 * 
 	 * @param channel
 	 */
-	public Session(Channel<T> channel) {
+	public Session(Channel<T> channel, Processor<GameEvent, GameEvent> eventProcessor) {
 		this.channel = channel;
+		this.eventProcessor = eventProcessor;
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class Session<T> {
 	 * Get the game processor 
 	 * @return
 	 */
-	public AsynchronousProcessorW<GameEvent> getEventProcessor() {
+	public AsynchronousProcessor<GameEvent, GameEvent> getEventProcessor() {
 		return eventProcessor;
 	}
 
