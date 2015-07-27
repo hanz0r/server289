@@ -3,9 +3,11 @@ package org.hanonator.net.channel;
 import java.util.Collections;
 
 import org.hanonator.game.GameException;
+import org.hanonator.game.event.GameEvent;
+import org.hanonator.game.event.listener.Listeners;
 import org.hanonator.net.GameMessage;
+import org.hanonator.net.Session;
 import org.hanonator.net.transformer.Transformers;
-import org.hanonator.processor.Processor;
 
 /**
  * Implements the read method which should be the same for each channel
@@ -17,20 +19,20 @@ import org.hanonator.processor.Processor;
 public abstract class AbstractChannel<T> implements Channel<T> {
 
 	/**
-	 * 
+	 * The session
 	 */
-	private final Processor<? super Object, ?> processor;
+	private final Session<?> session;
 
-	/**
-	 * 
-	 * @param processor
-	 */
-	public AbstractChannel(Processor<? super Object, ?> processor) {
-		this.processor = processor;
+	public AbstractChannel(Session<?> session) {
+		this.session = session;
 	}
 
 	@Override
 	public <I> void read(I object) throws GameException {
+		if (session == null) {
+			throw new NullPointerException("session is null");
+		}
+		
 		/*
 		 * If the object is an unfiltered message, transform it into a game event
 		 */
@@ -39,10 +41,10 @@ public abstract class AbstractChannel<T> implements Channel<T> {
 		}
 		
 		/*
-		 * Else submit the element to the process
+		 * If it is a game event, dispatch it to the right event listener
 		 */
-		else {
-			processor.process(Collections.singleton(object));
+		else if(object instanceof GameEvent) {
+			Listeners.notify(Collections.singleton((GameEvent) object), session);
 		}
 	}
 

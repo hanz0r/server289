@@ -1,4 +1,4 @@
-package org.hanonator.game.event.filter.impl;
+package org.hanonator.game.event.filter;
 
 import static org.joox.JOOX.$;
 
@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hanonator.game.event.filter.FilterChain;
-import org.hanonator.game.event.filter.FilterChainBuilder;
-import org.hanonator.game.event.filter.impl.DataFilter.DataType;
+import org.hanonator.game.event.filter.DataFilter.DataType;
 import org.hanonator.net.util.PacketLength;
 import org.xml.sax.SAXException;
 
@@ -25,7 +23,7 @@ import org.xml.sax.SAXException;
  * @author Red
  *
  */
-public class Templates {
+public class Filters {
 
 	/**
 	 * The collection of filterchains

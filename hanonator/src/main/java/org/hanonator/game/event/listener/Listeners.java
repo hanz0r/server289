@@ -5,6 +5,7 @@ import static org.joox.JOOX.$;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -89,7 +90,7 @@ public class Listeners {
 	 * @param session
 	 * @throws GameException
 	 */
-	public static void notify(List<GameEvent> events, Session<?> session) throws GameException {
+	public static void notify(Collection<GameEvent> events, Session<?> session) throws GameException {
 		/*
 		 * Iterator over all of the game events
 		 */
@@ -112,11 +113,6 @@ public class Listeners {
 					listener.exceptionOccured(session, new GameException(ex));
 				}
 			}
-			
-			/*
-			 * Remove the event from the list
-			 */
-			iterator.remove();
 		}
 	}
 

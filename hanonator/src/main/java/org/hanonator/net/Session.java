@@ -1,10 +1,7 @@
 package org.hanonator.net;
 
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.GameEvent;
 import org.hanonator.net.channel.Channel;
-import org.hanonator.processor.AsynchronousProcessor;
-import org.hanonator.processor.Processor;
 import org.hanonator.util.Attributes;
 
 /**
@@ -25,25 +22,9 @@ public class Session<T> {
 	private final Attributes attributes = new Attributes();
 
 	/**
-	 * The processor for game events
-	 * TODO: Fully implement this when the server runs too slow with processing packets when received
-	 */
-	private final Processor<GameEvent, GameEvent> eventProcessor;
-
-	/**
 	 * The channel for this session
 	 */
-	private final Channel<T> channel;
-
-	/**
-	 * The session
-	 * 
-	 * @param channel
-	 */
-	public Session(Channel<T> channel, Processor<GameEvent, GameEvent> eventProcessor) {
-		this.channel = channel;
-		this.eventProcessor = eventProcessor;
-	}
+	private Channel<T> channel;
 
 	/**
 	 * Pushes an exception to the player
@@ -52,6 +33,18 @@ public class Session<T> {
 	 */
 	public void push(GameException ex) {
 		ex.printStackTrace();
+	}
+	
+	/**
+	 * Registers a channel to this session
+	 * 
+	 * @param channel
+	 */
+	public void register(Channel<T> channel) {
+		if (this.channel != null) {
+			throw new IllegalStateException("There already is a channel registered to this session");
+		}
+		this.channel = channel;
 	}
 	
 	/**
@@ -78,14 +71,6 @@ public class Session<T> {
 	 */
 	public void setState(State state) {
 		this.state = state;
-	}
-
-	/**
-	 * Get the game processor 
-	 * @return
-	 */
-	public AsynchronousProcessor<GameEvent, GameEvent> getEventProcessor() {
-		return eventProcessor;
 	}
 
 	/**

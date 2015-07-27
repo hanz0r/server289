@@ -1,4 +1,4 @@
-package org.hanonator.game.event.filter.impl;
+package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
 import org.hanonator.net.GameMessage;

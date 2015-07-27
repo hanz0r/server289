@@ -94,7 +94,7 @@ public class LoginEventListener implements EventListener<GameEvent> {
 			}
 			break;
 		case "details":
-			System.out.println("hello");
+			
 			break;
 		}
 	}

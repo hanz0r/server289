@@ -3,7 +3,7 @@ package org.hanonator.net.transformer;
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.FilterChain;
-import org.hanonator.game.event.filter.impl.Templates;
+import org.hanonator.game.event.filter.Filters;
 import org.hanonator.net.GameMessage;
 
 public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
@@ -14,7 +14,7 @@ public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
 			/*
 			 * Get the filterchain for the corresponding event opcode
 			 */
-			FilterChain filterchain = Templates.get(input.getId());
+			FilterChain filterchain = Filters.get(input.getId());
 		
 			/*
 			 * If the filterchain exists, use it and apply the filterchain 

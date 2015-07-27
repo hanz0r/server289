@@ -1,34 +1,32 @@
 package org.hanonator.processor;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.hanonator.game.GameException;
+import java.util.Collections;
+import java.util.function.Function;
 
 /**
- * 
+ * Represents a Processor.
  * 
  * @author Red
  */
 @FunctionalInterface
-public interface Processor<T, R> {
+public interface Processor<T> {
 
 	/**
-	 * Processes a single element
+	 * Processes an element
 	 * 
-	 * @param element
-	 */
-	public abstract R processElement(T element);
-
-	/**
-	 * 
-	 * 
-	 * @param collection
+	 * @param input
 	 * @return
 	 */
-	default List<R> process(Collection<T> collection) throws GameException {
-		return collection.stream().map(e -> processElement(e)).filter(e -> e != null).collect(Collectors.toList());
+	public abstract <R> Process<R> process(Collection<T> input, Function<T, R> function);
+
+	/**
+	 * 
+	 * @param input
+	 * @return
+	 */
+	default <R> Process<R> process(T input, Function<T, R> function) {
+		return process(Collections.singleton(input), function);
 	}
 
 }

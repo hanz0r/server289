@@ -2,9 +2,8 @@ package org.hanonator.net.grizzly;
 
 import org.glassfish.grizzly.Connection;
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.GameEvent;
+import org.hanonator.net.Session;
 import org.hanonator.net.channel.AbstractChannel;
-import org.hanonator.processor.Processor;
 
 /**
  * GrizzlyChannel
@@ -12,7 +11,7 @@ import org.hanonator.processor.Processor;
  * @author Red
  *
  */
-public class GrizzlyChannel extends AbstractChannel<Connection<?>> {
+public class GameChannel extends AbstractChannel<Connection<?>> {
 
 	/**
 	 * This session's connection
@@ -24,8 +23,8 @@ public class GrizzlyChannel extends AbstractChannel<Connection<?>> {
 	 * 
 	 * @param connection
 	 */
-	public GrizzlyChannel(Connection<?> connection, Processor<GameEvent, GameEvent> processor) {
-		super(processor);
+	public GameChannel(Session<?> session, Connection<?> connection) {
+		super (session);
 		
 		this.connection = connection;
 	}

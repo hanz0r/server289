@@ -11,14 +11,11 @@ import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.GameEvent;
-import org.hanonator.game.event.GameEventProcessor;
 import org.hanonator.net.GameMessage;
 import org.hanonator.net.Session;
 import org.hanonator.net.Session.State;
-import org.hanonator.net.channel.Channel;
+import org.hanonator.net.transformer.Transformers;
 import org.hanonator.net.util.PacketLength;
-import org.hanonator.processor.Processor;
 
 /**
  * 
@@ -37,19 +34,14 @@ public class GameFilter extends BaseFilter {
 		logger.info("connection accepted " + ctx.getConnection());
 		
 		/*
-		 * 
-		 */
-		Processor<? super Object, ?> processor = new GameEventProcessor();
-		
-		/*
-		 * 
-		 */
-		Channel<Connection<?>> channel = new GrizzlyChannel(ctx.getConnection(), processor);
-		
-		/*
 		 * Create session
 		 */
-		Session<Connection<?>> session = new Session<>(channel, processor);
+		Session<Connection<?>> session = new Session<>();
+		
+		/*
+		 * Register a new gamechannel to the session
+		 */
+		session.register(new GameChannel(session, ctx.getConnection()));
 		
 		/*
 		 * Add the session to the attributes
@@ -125,7 +117,7 @@ public class GameFilter extends BaseFilter {
 					/*
 					 * Offer the message to be read by the session
 					 */
-					session.channel().read(message, null);
+					session.channel().read(message, Transformers.DEFAULT_EVENT_TRANSFORMER);
 					
 					/*
 					 * If there is still data remaining, rerun the filter, otherwise go to next action
@@ -177,7 +169,7 @@ public class GameFilter extends BaseFilter {
 			/*
 			 * Write the buffer
 			 */
-			ctx.write(buffer.flip());
+			ctx.setMessage(buffer.flip());
 		}
 		
 		/*

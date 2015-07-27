@@ -9,7 +9,7 @@ import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
-import org.hanonator.game.event.filter.impl.Templates;
+import org.hanonator.game.event.filter.Filters;
 import org.hanonator.game.event.listener.Listeners;
 import org.hanonator.net.grizzly.GameFilter;
 import org.hanonator.service.Services;
@@ -40,7 +40,7 @@ public class App {
 		/*
 		 * Loading decoders
 		 */
-		Templates.load(new File("data/message-decoders.xml"));
+		Filters.load(new File("data/message-decoders.xml"));
 		Services.load(new File("data/services.xml")).forEach(s -> s.start());
 		Listeners.load(new File("data/event-listeners.xml"));
 		

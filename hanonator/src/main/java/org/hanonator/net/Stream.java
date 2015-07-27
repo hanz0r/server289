@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import org.hanonator.game.GameException;
 import org.hanonator.net.channel.Channel;
 import org.hanonator.net.transformer.Transformer;
-import org.hanonator.net.transformer.Transformers;
 
 /**
  * channel.open(OPCODE).
@@ -58,7 +57,7 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> write(byte input) {
-		return write(input, i -> ByteBuffer.allocate(1).putInt(input));
+		return write(input, i -> (ByteBuffer) ByteBuffer.allocate(1).put((byte) input).flip());
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> write(short input) {
-		return write(input, i -> ByteBuffer.allocate(2).putShort(input));
+		return write(input, i -> (ByteBuffer) ByteBuffer.allocate(2).putShort(input).flip());
 	}
 
 	/**
@@ -78,7 +77,7 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> write(int input) {
-		return write(input, i -> ByteBuffer.allocate(4).putInt(input));
+		return write(input, i -> (ByteBuffer) ByteBuffer.allocate(4).putInt(input).flip());
 	}
 
 	/**
@@ -88,7 +87,7 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> write(long input) {
-		return write(input, i -> ByteBuffer.allocate(8).putLong(input));
+		return write(input, i -> (ByteBuffer) ByteBuffer.allocate(8).putLong(input).flip());
 	}
 
 	/**
@@ -109,7 +108,8 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> flush() throws GameException {
-		channel.write(new GameMessage(index, buffer.capacity(), (ByteBuffer) buffer.flip()), Transformers.DEFAULT_EVENT_TRANSFORMER);
+		channel.write(new GameMessage(index, buffer.capacity(), (ByteBuffer) buffer.flip()));
+		System.out.println(new GameMessage(index, buffer.capacity(), (ByteBuffer) buffer.flip()).getPayload());
 		return this;
 	}
 

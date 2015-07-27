@@ -1,9 +1,7 @@
-package org.hanonator.game.event.filter.impl;
+package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
-import org.hanonator.game.event.filter.Filter;
-import org.hanonator.game.event.filter.FilterChainContext;
-import org.hanonator.game.event.filter.impl.DataFilter.DataType;
+import org.hanonator.game.event.filter.DataFilter.DataType;
 
 /**
  * AttributeFilter
