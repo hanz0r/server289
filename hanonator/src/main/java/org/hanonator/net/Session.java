@@ -9,7 +9,7 @@ import org.hanonator.util.Attributes;
  * 
  * @author Red
  */
-public class Session<T> {
+public abstract class Session<T> {
 	
 	/**
 	 * The state of the session. By default it is connected

@@ -13,6 +13,7 @@ import org.hanonator.game.event.filter.Filters;
 import org.hanonator.game.event.listener.Listeners;
 import org.hanonator.net.grizzly.TempFilter;
 import org.hanonator.service.Services;
+import org.jboss.weld.environment.se.Weld;
 
 /**
  * Hello world!
@@ -37,6 +38,8 @@ public class App {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		Weld weld = new Weld();
+		
 		/*
 		 * Loading decoders
 		 */
@@ -57,7 +60,7 @@ public class App {
 		/*
 		 * Decode the game packets
 		 */
-		filterChainBuilder.add(new TempFilter());
+		filterChainBuilder.add(new TempFilter(weld.initialize()));
 		
 		/*
 		 * Parse messages into events

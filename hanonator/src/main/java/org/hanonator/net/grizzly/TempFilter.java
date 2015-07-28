@@ -2,6 +2,7 @@ package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
 import java.util.logging.Logger;
 
 import org.glassfish.grizzly.Connection;
@@ -11,6 +12,7 @@ import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.net.Session;
 import org.hanonator.net.Session.State;
+import org.jboss.weld.environment.se.WeldContainer;
 
 public class TempFilter extends BaseFilter {
 	
@@ -18,6 +20,19 @@ public class TempFilter extends BaseFilter {
 	 * The logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(TempFilter.class.getName());
+	
+	/**
+	 * 
+	 */
+	private final WeldContainer container;
+	
+	/**
+	 * 
+	 * @param container
+	 */
+	public TempFilter(WeldContainer container) {
+		this.container = container;
+	}
 	
 	@Override
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
@@ -63,12 +78,12 @@ public class TempFilter extends BaseFilter {
 		/*
 		 * Create session
 		 */
-		Session<Connection<?>> session = new Session<>();
+		Session<Connection<?>> session = container.instance().select(Session.class).get();
 		
 		/*
-		 * Register a new gamechannel to the session
+		 * Open the session's channel
 		 */
-		session.register(new GameChannel(session, ctx.getConnection()));
+		session.channel().open(ctx.getConnection());
 		
 		/*
 		 * Add the session to the attributes

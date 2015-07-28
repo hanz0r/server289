@@ -1,5 +1,7 @@
 package org.hanonator.net.channel;
 
+import java.io.IOException;
+
 import org.hanonator.game.GameException;
 import org.hanonator.net.Stream;
 import org.hanonator.net.transformer.Transformer;
@@ -13,32 +15,39 @@ import org.hanonator.net.transformer.Transformer;
 public interface Channel<T> {
 	
 	/**
+	 * 
+	 * @param connection
+	 * @throws IOException
+	 */
+	public abstract void open(T connection) throws IOException;
+	
+	/**
 	 * Reads object
 	 * 
 	 * @param object
 	 */
-	public abstract <I> void read(I object) throws GameException;
+	public abstract void read(Object object) throws IOException;
 	
 	/**
 	 * Writes object
 	 * 
 	 * @param object
 	 */
-	public abstract <I> void write(I object) throws GameException;
+	public abstract void write(Object object) throws IOException;
 
 	/**
 	 * Closes the stream
 	 * 
 	 * @throws GameException
 	 */
-	public abstract void close() throws GameException;
+	public abstract void close() throws IOException;
 	
 	/**
 	 * Reads an object with a default transformer
 	 * 
 	 * @param object
 	 */
-	default <I> void read(I object, Transformer<I, ?> transformer) throws GameException {
+	default <I> void read(I object, Transformer<I, ?> transformer) throws IOException {
 		this.read(transformer.transform(object));
 	}
 
@@ -47,7 +56,7 @@ public interface Channel<T> {
 	 * 
 	 * @param object
 	 */
-	default <I> void write(I object, Transformer<I, ?> transformer) throws GameException {
+	default <I> void write(I object, Transformer<I, ?> transformer) throws IOException {
 		this.write(transformer.transform(object));
 	}
 
