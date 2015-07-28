@@ -4,17 +4,17 @@ import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.FilterChain;
 import org.hanonator.game.event.filter.Filters;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 
-public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
+public class MessageTransformer implements Transformer<Message, GameEvent> {
 
 	@Override
-	public GameEvent transform(GameMessage input) throws TransformationException {
+	public GameEvent transform(Message input) throws TransformationException {
 		try {
 			/*
 			 * Get the filterchain for the corresponding event opcode
 			 */
-			FilterChain filterchain = Filters.get(input.getId());
+			FilterChain filterchain = Filters.get(input.header().getOpcode());
 		
 			/*
 			 * If the filterchain exists, use it and apply the filterchain 
@@ -27,8 +27,8 @@ public class MessageTransformer implements Transformer<GameMessage, GameEvent> {
 			 * If it doesn't exist, return a new GameEvent with the raw payload as attribute
 			 */
 			else {
-				GameEvent event = new GameEvent(input.getId());
-				event.getAttributes().set("payload", input.getPayload().flip());
+				GameEvent event = new GameEvent(input.header().getOpcode());
+				event.getAttributes().set("payload", input.payload());
 				return event;
 			}
 		} catch (GameException ex) {

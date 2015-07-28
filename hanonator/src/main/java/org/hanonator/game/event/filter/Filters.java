@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hanonator.game.event.filter.DataFilter.DataType;
-import org.hanonator.net.util.PacketLength;
+import org.hanonator.net.Headers;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,7 +45,7 @@ public class Filters {
 			});
 			
 			filter_chains.put(id, builder.build());
-			PacketLength.put(id, size);
+			Headers.put(id, size);
 		});
 	}
 

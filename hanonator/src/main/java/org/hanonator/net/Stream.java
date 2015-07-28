@@ -108,8 +108,7 @@ public class Stream<T> {
 	 * @return
 	 */
 	public Stream<T> flush() throws GameException {
-		channel.write(new GameMessage(index, buffer.capacity(), (ByteBuffer) buffer.flip()));
-		System.out.println(new GameMessage(index, buffer.capacity(), (ByteBuffer) buffer.flip()).getPayload());
+		channel.write(new Message(new Header(index, buffer.capacity()), (ByteBuffer) buffer.flip()));
 		return this;
 	}
 

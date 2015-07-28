@@ -1,35 +1,34 @@
 package org.hanonator.processor.impl;
 
-import java.util.List;
-import java.util.concurrent.CyclicBarrier;
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
 
 import org.hanonator.processor.Process;
 
-@Deprecated
 public class AsynchronousProcess<T> implements Process<T> {
 
 	/**
 	 * The collection of futures for each thread
 	 */
-	private final List<T> output;
+	private final Collection<T> output;
 	
 	/**
 	 * The cyclic barrier responsible for making sure 
 	 */
-	private final CyclicBarrier barrier;
+	private final CountDownLatch latch;
 
-	public AsynchronousProcess(List<T> output, CyclicBarrier barrier) {
+	public AsynchronousProcess(Collection<T> output, CountDownLatch latch) {
 		this.output = output;
-		this.barrier = barrier;
+		this.latch = latch;
 	}
 
 	@Override
-	public List<T> results() throws InterruptedException {
+	public Collection<T> results() throws InterruptedException {
 		try {
 			/*
 			 * Wait until all of the threads have been finished executing
 			 */
-			barrier.await();
+			latch.await();
 			
 			/*
 			 * Return the output once the cyclic barrier has been broken

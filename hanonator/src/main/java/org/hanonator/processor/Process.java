@@ -1,6 +1,6 @@
 package org.hanonator.processor;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * A process to be submitted to the processor
@@ -17,7 +17,7 @@ public interface Process<T> {
 	 * @return
 	 * @throws InterruptedException 
 	 */
-	public abstract List<T> results() throws InterruptedException;
+	public abstract Collection<T> results() throws InterruptedException;
 
 	/**
 	 * TODO

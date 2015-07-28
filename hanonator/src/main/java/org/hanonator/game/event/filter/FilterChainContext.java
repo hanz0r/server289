@@ -1,7 +1,7 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 import org.hanonator.util.Attributes;
 
 /**
@@ -19,19 +19,19 @@ public class FilterChainContext {
 	/**
 	 * The message
 	 */
-	private final GameMessage message;
+	private final Message message;
 	
 	/**
 	 * The event
 	 */
 	private final GameEvent event;
 
-	public FilterChainContext(GameMessage message, GameEvent event) {
+	public FilterChainContext(Message message, GameEvent event) {
 		this.message = message;
 		this.event = event;
 	}
 
-	public GameMessage getMessage() {
+	public Message getMessage() {
 		return message;
 	}
 

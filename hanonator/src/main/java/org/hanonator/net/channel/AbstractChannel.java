@@ -5,7 +5,7 @@ import java.util.Collections;
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.listener.Listeners;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 import org.hanonator.net.Session;
 import org.hanonator.net.transformer.Transformers;
 
@@ -36,8 +36,8 @@ public abstract class AbstractChannel<T> implements Channel<T> {
 		/*
 		 * If the object is an unfiltered message, transform it into a game event
 		 */
-		if (object instanceof GameMessage) {
-			this.read((GameMessage) object, Transformers.DEFAULT_EVENT_TRANSFORMER);
+		if (object instanceof Message) {
+			this.read((Message) object, Transformers.DEFAULT_EVENT_TRANSFORMER);
 		}
 		
 		/*

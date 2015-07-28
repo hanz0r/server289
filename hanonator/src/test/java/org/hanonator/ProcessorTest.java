@@ -1,15 +1,16 @@
 package org.hanonator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Random;
-
-import org.hanonator.processor.Processor;
-import org.hanonator.processor.impl.AsynchronousProcessor;
+import java.util.concurrent.Executors;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.hanonator.processor.Processor;
+import org.hanonator.processor.impl.AsynchronousProcessor;
 
 public class ProcessorTest extends TestCase {
 	
@@ -30,22 +31,24 @@ public class ProcessorTest extends TestCase {
 		return new TestSuite(ProcessorTest.class);
 	}
 
+	private static final int TEST_AMOUNT = 100;
+
 	public void testApp() throws InterruptedException {
-		Processor<Integer> processor = new AsynchronousProcessor<>();
-		
-		List<Integer> input = new ArrayList<>();
-		for (int i = 0; i < 10000; i++) {
-			input.add(i);
-		}
-		
-		final Random random = new Random();
-		List<Integer> list = processor.process(input, i -> {
-			for (int j = 0; j < 10000; j++) {
-				random.nextDouble();
+		Processor<Integer> processor = new AsynchronousProcessor<>(Executors.newFixedThreadPool(4));
+		for (int i = 0; i < TEST_AMOUNT; i++) {
+			
+			List<Integer> input = new ArrayList<>();
+			for (int j = 0; j < 1000; j++) {
+				input.add(j);
 			}
-			return i;
-		}).results();
-		System.out.println(list.size());
+			
+			Collection<Integer> results = processor.process(input, g -> {
+				try { Thread.sleep(10);}catch(Exception ex){}
+				return g;
+			}).results();
+			System.out.printf("iteration[%d]: %d%n", i, results.size());
+			results.clear();
+		}
 	}
 
 }

@@ -1,7 +1,7 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 import org.hanonator.net.Session;
 
 @FunctionalInterface
@@ -19,7 +19,7 @@ public interface Filter {
 	 * 
 	 * @param throwable
 	 */
-	default void handleException(GameException exception, GameMessage message, Session<?> session) {
+	default void handleException(GameException exception, Message message, Session<?> session) {
 		session.push(exception);
 	}
 

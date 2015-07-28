@@ -6,7 +6,7 @@ import java.util.List;
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.Filter.FilterResult;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 
 /**
  * 
@@ -31,8 +31,8 @@ public class FilterChain implements Iterable<Filter> {
 	 * @param user
 	 * @throws GameException
 	 */
-	public GameEvent apply(GameMessage message) throws GameException {
-		FilterChainContext context = new FilterChainContext(message, new GameEvent(message.getId()));
+	public GameEvent apply(Message message) throws GameException {
+		FilterChainContext context = new FilterChainContext(message, new GameEvent(message.header().getOpcode()));
 		try {
 		/*
 		 * Apply all of the filters

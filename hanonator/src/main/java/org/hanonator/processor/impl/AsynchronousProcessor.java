@@ -1,9 +1,9 @@
 package org.hanonator.processor.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.CyclicBarrier;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -11,7 +11,6 @@ import java.util.function.Function;
 import org.hanonator.processor.Process;
 import org.hanonator.processor.Processor;
 
-@Deprecated
 public class AsynchronousProcessor<T> implements Processor<T> {
 
 	/**
@@ -40,32 +39,44 @@ public class AsynchronousProcessor<T> implements Processor<T> {
 		/*
 		 * Create the cyclic barrier
 		 */
-		final CyclicBarrier barrier = new CyclicBarrier(input.size() + 1);
+		final CountDownLatch latch = new CountDownLatch(input.size());
 		
 		/*
 		 * Create the output
 		 */
-		final List<R> output = new ArrayList<>();
+		final Queue<R> output = new ArrayBlockingQueue<>(input.size());
 		
 		/*
 		 * Submit each task to the service
 		 */
 		input.forEach(i -> service.submit(() -> {
 			/*
+			 * Get the result
+			 */
+			R result = function.apply(i);
+			
+			/*
 			 * Add the result of the processing to the output
 			 */
-			output.add(function.apply(i));
+			synchronized(output) {
+				output.add(result);
+			}
 			
 			/*
 			 * Wait until the others are done executing
 			 */
-			return barrier.await();
+			latch.countDown();
+			
+			/*
+			 * Return the current barrier count
+			 */
+			return latch.getCount();
 		}));
 		
 		/*
 		 * Return a new asynchronous process
 		 */
-		return new AsynchronousProcess<R>(output, barrier);
+		return new AsynchronousProcess<R>(output, latch);
 	}
 
 }

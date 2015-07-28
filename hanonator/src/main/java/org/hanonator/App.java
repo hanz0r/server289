@@ -11,7 +11,7 @@ import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransportBuilder;
 import org.hanonator.game.event.filter.Filters;
 import org.hanonator.game.event.listener.Listeners;
-import org.hanonator.net.grizzly.GameFilter;
+import org.hanonator.net.grizzly.TempFilter;
 import org.hanonator.service.Services;
 
 /**
@@ -57,7 +57,7 @@ public class App {
 		/*
 		 * Decode the game packets
 		 */
-		filterChainBuilder.add(new GameFilter());
+		filterChainBuilder.add(new TempFilter());
 		
 		/*
 		 * Parse messages into events

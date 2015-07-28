@@ -1,7 +1,7 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
-import org.hanonator.net.GameMessage;
+import org.hanonator.net.Message;
 
 @FunctionalInterface
 interface DataFilter<T> {
@@ -12,7 +12,7 @@ interface DataFilter<T> {
 	 * @return
 	 * @throws GameException
 	 */
-	public abstract T filter(GameMessage message) throws GameException;
+	public abstract T filter(Message message) throws GameException;
 	
 	/**
 	 * The type of data
@@ -24,12 +24,12 @@ interface DataFilter<T> {
 		/**
 		 * Unsigned byte
 		 */
-		BYTE(m -> m.get() & 0xFF),
+		BYTE(m -> m.payload().get()),
 		
 		/**
 		 * Unsigned short (2 bytes)
 		 */
-		SHORT(m -> m.getShort() & 0xFFFF), 
+		SHORT(m -> m.payload().getShort()), 
 		
 		/**
 		 * Unsigned integer (3 bytes)
@@ -41,22 +41,26 @@ interface DataFilter<T> {
 		/**
 		 * Signed integer (4 bytes)
 		 */
-		INT(m -> m.getInt()),
+		INT(m -> m.payload().getInt()),
 		
 		/**
 		 * Unsigned long (8 bytes)
 		 */
-		LONG(m -> (m.getInt() << 32) | m.getInt()),
+		LONG(m -> m.payload().getLong()),
 		
 		/**
 		 * Gets the walking queue;
 		 */
-		COORDINATE_QUEUE(m -> { throw new GameException(new UnsupportedOperationException()); }),
+		COORDINATE_QUEUE(m -> {
+			throw new GameException(new UnsupportedOperationException());
+		}),
 		
 		/**
 		 * Gets the walking queue;
 		 */
-		STRING(m -> { throw new GameException(new UnsupportedOperationException()); });
+		STRING(m -> {
+			throw new GameException(new UnsupportedOperationException());
+		});
 		
 		/**
 		 * The data parser

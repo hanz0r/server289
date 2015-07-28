@@ -1,10 +1,10 @@
-package org.hanonator.net.util;
+package org.hanonator.net;
 
 /**
  * 
  * @author user104
  */
-public final class PacketLength {
+public final class Headers {
 
 	/**
 	 * The lengths of each known packet
