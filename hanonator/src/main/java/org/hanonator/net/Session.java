@@ -1,7 +1,8 @@
 package org.hanonator.net;
 
+import javax.inject.Inject;
+
 import org.hanonator.game.GameException;
-import org.hanonator.net.channel.Channel;
 import org.hanonator.util.Attributes;
 
 /**
@@ -31,7 +32,7 @@ public class Session<T> {
 	 * 
 	 * @return
 	 */
-	public Channel<T> channel() {
+	@Inject public Channel<T> channel() {
 		return channel;
 	}
 

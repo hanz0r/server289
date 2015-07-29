@@ -3,8 +3,8 @@ package org.hanonator;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.filterchain.FilterChainBuilder;
 import org.glassfish.grizzly.filterchain.TransportFilter;
 import org.glassfish.grizzly.nio.transport.TCPNIOTransport;
@@ -34,7 +34,7 @@ public class App {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main_man(String[] args) throws Exception {
 		/*
 		 * Loading decoders
 		 */

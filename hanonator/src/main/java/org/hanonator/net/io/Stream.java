@@ -1,9 +1,9 @@
-package org.hanonator.net;
+package org.hanonator.net.io;
 
 import java.nio.ByteBuffer;
 
 import org.hanonator.game.GameException;
-import org.hanonator.net.channel.Channel;
+import org.hanonator.net.Channel;
 import org.hanonator.net.transformer.Transformer;
 
 /**

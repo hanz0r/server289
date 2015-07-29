@@ -1,7 +1,7 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.net.Message;
+import org.hanonator.net.io.Message;
 import org.hanonator.util.Attributes;
 
 /**

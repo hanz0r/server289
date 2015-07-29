@@ -2,17 +2,17 @@ package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.Buffer;
 import org.glassfish.grizzly.Connection;
 import org.glassfish.grizzly.filterchain.BaseFilter;
 import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
-import org.hanonator.net.Header;
 import org.hanonator.net.Session;
 import org.hanonator.net.Session.State;
+import org.hanonator.net.io.Header;
 
 public class TempFilter extends BaseFilter {
 	

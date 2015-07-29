@@ -2,8 +2,10 @@ package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 
+import javax.enterprise.context.SessionScoped;
+
 import org.glassfish.grizzly.Connection;
-import org.hanonator.net.channel.Channel;
+import org.hanonator.net.Channel;
 
 public class GrizzlyChannel implements Channel<Connection<?>> {
 

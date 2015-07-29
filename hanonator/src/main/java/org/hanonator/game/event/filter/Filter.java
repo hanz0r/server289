@@ -1,8 +1,8 @@
 package org.hanonator.game.event.filter;
 
 import org.hanonator.game.GameException;
-import org.hanonator.net.Message;
 import org.hanonator.net.Session;
+import org.hanonator.net.io.Message;
 
 @FunctionalInterface
 public interface Filter {

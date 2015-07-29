@@ -1,8 +1,8 @@
 package org.hanonator.net.grizzly;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.filterchain.BaseFilter;
 import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;

@@ -4,7 +4,7 @@ import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.FilterChain;
 import org.hanonator.game.event.filter.Filters;
-import org.hanonator.net.Message;
+import org.hanonator.net.io.Message;
 
 public class MessageTransformer implements Transformer<Message, GameEvent> {
 

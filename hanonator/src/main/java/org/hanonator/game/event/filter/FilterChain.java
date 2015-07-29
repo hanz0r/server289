@@ -6,7 +6,7 @@ import java.util.List;
 import org.hanonator.game.GameException;
 import org.hanonator.game.event.GameEvent;
 import org.hanonator.game.event.filter.Filter.FilterResult;
-import org.hanonator.net.Message;
+import org.hanonator.net.io.Message;
 
 /**
  * 

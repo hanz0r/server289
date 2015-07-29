@@ -1,7 +1,7 @@
 package org.hanonator.net.transformer;
 
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.net.Message;
+import org.hanonator.net.io.Message;
 
 public class Transformers {
 
