@@ -22,9 +22,11 @@ public abstract class Session<T> {
 	private final Attributes attributes = new Attributes();
 
 	/**
-	 * The channel for this session
+	 * Gets the channel
+	 * 
+	 * @return
 	 */
-	private Channel<T> channel;
+	public abstract Channel<T> channel();
 
 	/**
 	 * Pushes an exception to the player
@@ -33,18 +35,6 @@ public abstract class Session<T> {
 	 */
 	public void push(GameException ex) {
 		ex.printStackTrace();
-	}
-	
-	/**
-	 * Registers a channel to this session
-	 * 
-	 * @param channel
-	 */
-	public void register(Channel<T> channel) {
-		if (this.channel != null) {
-			throw new IllegalStateException("There already is a channel registered to this session");
-		}
-		this.channel = channel;
 	}
 	
 	/**
@@ -74,20 +64,12 @@ public abstract class Session<T> {
 	}
 
 	/**
-	 * Gets the channel
-	 * 
-	 * @return
-	 */
-	public Channel<T> channel() {
-		return channel;
-	}
-
-	/**
 	 * Indicates the state the session is currently in 
 	 * 
 	 * @author Red
 	 */
 	public static enum State {
+		
 		/**
 		 * The connection has recently connected and is in the process of logging in
 		 */

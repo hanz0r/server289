@@ -13,14 +13,7 @@ import org.hanonator.net.transformer.Transformer;
  * @param <T>
  */
 public interface Channel<T> {
-	
-	/**
-	 * 
-	 * @param connection
-	 * @throws IOException
-	 */
-	public abstract void open(T connection) throws IOException;
-	
+
 	/**
 	 * Reads object
 	 * 

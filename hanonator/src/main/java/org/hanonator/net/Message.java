@@ -20,7 +20,7 @@ public class Message {
 	 */
 	private final ByteBuffer payload;
 
-	public Message(Header header, ByteBuffer payload) {
+	Message(Header header, ByteBuffer payload) {
 		this.header = header;
 		this.payload = payload;
 	}

@@ -75,7 +75,6 @@ public class Listeners {
 				 * when a new list of event has been created, it is mapped to the right id)
 				 */
 				listeners.put(id, list);
-				System.out.println("Mapped " + action + " to " + id);
 			} catch (Exception ex) {
 				throw new RuntimeException(ex);
 			}

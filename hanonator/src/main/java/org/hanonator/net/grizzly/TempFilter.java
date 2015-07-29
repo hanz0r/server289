@@ -2,17 +2,17 @@ package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channel;
 import java.util.logging.Logger;
 
+import org.glassfish.grizzly.Buffer;
 import org.glassfish.grizzly.Connection;
 import org.glassfish.grizzly.filterchain.BaseFilter;
 import org.glassfish.grizzly.filterchain.FilterChainContext;
 import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
+import org.hanonator.net.Header;
 import org.hanonator.net.Session;
 import org.hanonator.net.Session.State;
-import org.jboss.weld.environment.se.WeldContainer;
 
 public class TempFilter extends BaseFilter {
 	
@@ -20,19 +20,6 @@ public class TempFilter extends BaseFilter {
 	 * The logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(TempFilter.class.getName());
-	
-	/**
-	 * 
-	 */
-	private final WeldContainer container;
-	
-	/**
-	 * 
-	 * @param container
-	 */
-	public TempFilter(WeldContainer container) {
-		this.container = container;
-	}
 	
 	@Override
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
@@ -49,7 +36,41 @@ public class TempFilter extends BaseFilter {
 		/*
 		 * Get the client's data
 		 */
-		final ByteBuffer buffer = ((HeapBuffer) ctx.getMessage()).toByteBuffer();
+		final HeapBuffer heap_buffer = (HeapBuffer) ctx.getMessage();
+		
+		/*
+		 * Convert to a ByteBuffer
+		 */
+		final ByteBuffer buffer = ByteBuffer.allocate(heap_buffer.capacity());
+		
+		/*
+		 * Fill the buffer
+		 */
+		heap_buffer.get(buffer);
+		
+		/*
+		 * Flip the buffer
+		 */
+		buffer.flip();
+		
+		/*
+		 * Read the message's header
+		 */
+		Header header = session.getState() == State.CONNECTED ? Header.wrap(buffer) : Header.estimate(buffer);
+		
+		/*
+		 * Send the message to the channel for distribution
+		 */
+		session.channel().read(header.resolve(buffer));
+		
+		/*
+		 * If there is still data remaining in the buffer, rerun this filter to get the leftover data
+		 */
+		if (buffer.remaining() - header.size() > 0) {
+			Buffer out = ctx.getMemoryManager().allocate(buffer.remaining());
+			out.put((ByteBuffer) buffer.flip());
+			return ctx.getRerunFilterAction();
+		}
 		
 		/*
 		 * Invoke next filter
@@ -78,12 +99,7 @@ public class TempFilter extends BaseFilter {
 		/*
 		 * Create session
 		 */
-		Session<Connection<?>> session = container.instance().select(Session.class).get();
-		
-		/*
-		 * Open the session's channel
-		 */
-		session.channel().open(ctx.getConnection());
+		Session<Connection<?>> session = new GrizzlySession(ctx.getConnection());
 		
 		/*
 		 * Add the session to the attributes

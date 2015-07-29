@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hanonator.game.event.filter.DataFilter.DataType;
-import org.hanonator.net.Headers;
 import org.xml.sax.SAXException;
 
 /**
@@ -35,7 +34,7 @@ public class Filters {
 			FilterChainBuilder builder = new FilterChainBuilder();
 			
 			int id = Integer.valueOf(e.getAttribute("opcode"));
-			int size = Integer.valueOf(e.getAttribute("length"));
+			// int size = Integer.valueOf(e.getAttribute("length"));
 			
 			$(e).children().forEach(a -> {
 				String type = a.getAttribute("type");
@@ -45,7 +44,6 @@ public class Filters {
 			});
 			
 			filter_chains.put(id, builder.build());
-			Headers.put(id, size);
 		});
 	}
 
