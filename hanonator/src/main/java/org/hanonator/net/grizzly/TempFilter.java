@@ -99,7 +99,12 @@ public class TempFilter extends BaseFilter {
 		/*
 		 * Create session
 		 */
-		Session<Connection<?>> session = new GrizzlySession(ctx.getConnection());
+		Session<Connection<?>> session = new Session<Connection<?>>();
+		
+		/*
+		 * Open the channel
+		 */
+		session.channel().bind(ctx.getConnection());
 		
 		/*
 		 * Add the session to the attributes

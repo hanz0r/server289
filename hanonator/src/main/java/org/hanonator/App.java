@@ -31,10 +31,8 @@ public class App {
 	private static final SocketAddress ADDRESS = new InetSocketAddress("localhost", 43594);
 
 	/**
-	 * Program entry point 
 	 * 
 	 * @param args
-	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		/*

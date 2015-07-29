@@ -9,7 +9,7 @@ import org.hanonator.util.Attributes;
  * 
  * @author Red
  */
-public abstract class Session<T> {
+public class Session<T> {
 	
 	/**
 	 * The state of the session. By default it is connected
@@ -22,11 +22,18 @@ public abstract class Session<T> {
 	private final Attributes attributes = new Attributes();
 
 	/**
+	 * Create a new channel
+	 */
+	private Channel<T> channel;
+
+	/**
 	 * Gets the channel
 	 * 
 	 * @return
 	 */
-	public abstract Channel<T> channel();
+	public Channel<T> channel() {
+		return channel;
+	}
 
 	/**
 	 * Pushes an exception to the player

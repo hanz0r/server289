@@ -3,23 +3,21 @@ package org.hanonator.net.grizzly;
 import java.io.IOException;
 
 import org.glassfish.grizzly.Connection;
-import org.hanonator.net.Session;
 import org.hanonator.net.channel.Channel;
 
-public class GrizzlySession extends Session<Connection<?>> implements Channel<Connection<?>> {
+public class GrizzlyChannel implements Channel<Connection<?>> {
 
 	/**
 	 * The connection for this session/channel
 	 */
-	private final Connection<?> connection;
-
-	public GrizzlySession(Connection<?> connection) {
-		this.connection = connection;
-	}
-
+	private Connection<?> connection;
+	
 	@Override
-	public Channel<Connection<?>> channel() {
-		return this;
+	public void bind(Connection<?> connection) throws IOException {
+		if (connection != null) {
+			throw new IOException("connection already exists");
+		}
+		this.connection = connection;
 	}
 
 	@Override
@@ -29,11 +27,17 @@ public class GrizzlySession extends Session<Connection<?>> implements Channel<Co
 
 	@Override
 	public void write(Object object) throws IOException {
+		if (connection == null || !connection.isOpen()) {
+			throw new IOException("can't write to connection");
+		}
 		connection.write(object);
 	}
 
 	@Override
 	public void close() throws IOException {
+		if (connection == null || !connection.isOpen()) {
+			throw new IOException("connection already closed");
+		}
 		connection.closeSilently();
 	}
 

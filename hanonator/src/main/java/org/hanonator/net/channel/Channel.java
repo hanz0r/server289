@@ -27,6 +27,14 @@ public interface Channel<T> {
 	 * @param object
 	 */
 	public abstract void write(Object object) throws IOException;
+	
+	/**
+	 * Opens the connection
+	 * 
+	 * @param connection
+	 * @throws IOException
+	 */
+	public abstract void bind(T connection) throws IOException;
 
 	/**
 	 * Closes the stream
