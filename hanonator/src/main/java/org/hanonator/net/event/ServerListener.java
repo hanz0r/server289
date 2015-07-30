@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.hanonator.game.event.GameEvent;
-import org.hanonator.game.event.listener.Listeners;
+import org.hanonator.game.event.listener.ListenersOld;
 import org.hanonator.net.io.Message;
 import org.hanonator.net.transformer.Transformer;
 
@@ -60,7 +60,7 @@ public class ServerListener {
 		/*
 		 * transform to event, etc
 		 */
-		Listeners.notify(Collections.singleton(game_event), event.getSession());
+		ListenersOld.notify(Collections.singleton(game_event), event.getSession());
 	}
 
 	/**

@@ -17,7 +17,7 @@ import org.hanonator.game.event.GameEvent;
 import org.hanonator.net.Session;
 import org.xml.sax.SAXException;
 
-public class Listeners {
+public class ListenersOld {
 
 	/**
 	 * The system ClassLoader
@@ -27,7 +27,7 @@ public class Listeners {
 	/**
 	 * The logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(Listeners.class.getName());
+	private static final Logger logger = Logger.getLogger(ListenersOld.class.getName());
 
 	/**
 	 * The event handlers

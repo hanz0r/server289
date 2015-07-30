@@ -1,12 +1,21 @@
 package org.hanonator.net.grizzly;
 
 import java.io.IOException;
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
 
 import org.glassfish.grizzly.Connection;
 import org.hanonator.net.Channel;
 
-public class GrizzlyChannel implements Channel<Connection<?>> {
+@SessionScoped
+public class GrizzlyChannel implements Channel<Connection<?>>, Serializable {
 
+	/**
+	 * The serial version UID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * The connection for this session/channel
 	 */

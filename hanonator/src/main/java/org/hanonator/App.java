@@ -7,11 +7,17 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.hanonator.game.event.filter.Filters;
-import org.hanonator.game.event.listener.Listeners;
+import org.hanonator.game.event.listener.ListenersOld;
 import org.hanonator.net.Server;
 import org.hanonator.service.Services;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
+/**
+ * Contains the program's entry point
+ * 
+ * @author user104
+ *
+ */
 public class App {
 
 	/**
@@ -20,7 +26,7 @@ public class App {
 	@Inject private Server server;
 
 	/**
-	 * Entry point of the application and also initializes.
+	 * Entry point and initialization of the application.
 	 * 
 	 * @param event
 	 * @throws Exception
@@ -31,7 +37,7 @@ public class App {
 		 */
 		Filters.load(new File("data/message-decoders.xml"));
 		Services.load(new File("data/services.xml")).forEach(s -> s.start());
-		Listeners.load(new File("data/event-listeners.xml"));
+		ListenersOld.load(new File("data/event-listeners.xml"));
 		
 		/*
 		 * Bind the server to the address
