@@ -129,6 +129,15 @@ public class Header {
 	}
 
 	/**
+	 * Creates a message that conforms to this header's specifications
+	 * 
+	 * @return
+	 */
+	public Message create() {
+		return new Message(this, ByteBuffer.allocate(size));
+	}
+
+	/**
 	 * Gets the opcode
 	 * 
 	 * @return

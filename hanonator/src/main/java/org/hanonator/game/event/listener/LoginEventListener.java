@@ -90,6 +90,7 @@ public class LoginEventListener implements EventListener<GameEvent> {
 			 * Else throw game exception
 			 */
 			else {
+				session.channel().closeSilently();
 				throw new IllegalStateException("opcode needs to be 14 or 15, is " + opcode);
 			}
 			break;

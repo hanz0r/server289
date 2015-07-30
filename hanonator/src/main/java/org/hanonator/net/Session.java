@@ -1,6 +1,6 @@
 package org.hanonator.net;
 
-import javax.inject.Inject;
+import java.io.IOException;
 
 import org.hanonator.game.GameException;
 import org.hanonator.util.Attributes;
@@ -28,11 +28,21 @@ public class Session<T> {
 	private Channel<T> channel;
 
 	/**
+	 * 
+	 * @param channel
+	 * @throws IOException
+	 */
+	public Channel<T> register(Channel<T> channel) {
+		this.channel = channel;
+		return channel;
+	}
+
+	/**
 	 * Gets the channel
 	 * 
 	 * @return
 	 */
-	@Inject public Channel<T> channel() {
+	public Channel<T> channel() {
 		return channel;
 	}
 
@@ -43,6 +53,7 @@ public class Session<T> {
 	 */
 	public void push(GameException ex) {
 		ex.printStackTrace();
+		channel.closeSilently();
 	}
 	
 	/**

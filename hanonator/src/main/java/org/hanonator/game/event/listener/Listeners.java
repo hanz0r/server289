@@ -89,7 +89,7 @@ public class Listeners {
 	 * @param session
 	 * @throws GameException
 	 */
-	public static void notify(Collection<GameEvent> events, Session<?> session) throws GameException {
+	public static void notify(Collection<GameEvent> events, Session<?> session) {
 		/*
 		 * Iterator over all of the game events
 		 */

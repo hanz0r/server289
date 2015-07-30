@@ -6,6 +6,34 @@
 		<attribute type="SHORT" name="test-2" />
 	</decoder>
 	
+	<!-- Events for when items are used on things -->
+	<!-- Item on Item -->
+	<decoder opcode="200" length="12">
+		<attribute type="SHORT" name="primary_id" />
+		<attribute type="SHORT" name="primary_slot" />
+		<attribute type="SHORT" name="primary_interface" />
+		<attribute type="SHORT" name="secondary_id" />
+		<attribute type="SHORT" name="secondary_slot" />
+		<attribute type="SHORT" name="secondary_interface" />
+	</decoder>
+	<!-- Item on object -->
+	<decoder opcode="184" length="12">
+		<attribute type="SHORT" name="x" />
+		<attribute type="SHORT" name="y" />
+		<attribute type="SHORT" name="object_id" />
+		<attribute type="SHORT" name="item_id" />
+		<attribute type="SHORT" name="slot" />
+		<attribute type="SHORT" name="interface" />
+	</decoder>
+	
+	<!-- Events for when items are click on interfaces -->
+	<!-- First option -->
+	<decoder opcode="76" length="6">
+		<attribute type="SHORT" name="item_id"/>
+		<attribute type="SHORT" name="slot"/>
+		<attribute type="SHORT" name="interface_id"/>
+	</decoder>
+	
 	<!-- Unused junk data -->
 	<decoder opcode="181" length="0" />
 	<decoder opcode="232" length="0" />

@@ -1,9 +1,9 @@
 package org.hanonator.net.grizzly;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
 import org.glassfish.grizzly.Buffer;
 import org.glassfish.grizzly.Connection;
 import org.glassfish.grizzly.filterchain.BaseFilter;
@@ -12,15 +12,22 @@ import org.glassfish.grizzly.filterchain.NextAction;
 import org.glassfish.grizzly.memory.HeapBuffer;
 import org.hanonator.net.Session;
 import org.hanonator.net.Session.State;
+import org.hanonator.net.event.ConnectEvent;
+import org.hanonator.net.event.DisconnectEvent;
+import org.hanonator.net.event.ReadEvent;
 import org.hanonator.net.io.Header;
 
 public class TempFilter extends BaseFilter {
 	
 	/**
-	 * The logger for this class
+	 * The grizzly server this filter is filtering
 	 */
-	private static final Logger logger = Logger.getLogger(TempFilter.class.getName());
+	private final GrizzlyServer server;
 	
+	public TempFilter(GrizzlyServer server) {
+		this.server = server;
+	}
+
 	@Override
 	public NextAction handleRead(FilterChainContext ctx) throws IOException {
 		Session<?> session = (Session<?>) ctx.getConnection().getAttributes().getAttribute("session");
@@ -61,7 +68,7 @@ public class TempFilter extends BaseFilter {
 		/*
 		 * Send the message to the channel for distribution
 		 */
-		session.channel().read(header.resolve(buffer));
+		server.getListener().fire(new ReadEvent(header.resolve(buffer), session));
 		
 		/*
 		 * If there is still data remaining in the buffer, rerun this filter to get the leftover data
@@ -89,27 +96,36 @@ public class TempFilter extends BaseFilter {
 			ctx.getConnection().closeSilently();
 			return ctx.getStopAction();
 		}
+		
+		// TODO
+
+		/*
+		 * Let superclass handle the next action
+		 */
 		return super.handleWrite(ctx);
 	}
 
 	@Override
 	public NextAction handleAccept(FilterChainContext ctx) throws IOException {
-		logger.info("connection accepted " + ctx.getConnection());
-		
 		/*
 		 * Create session
 		 */
 		Session<Connection<?>> session = new Session<Connection<?>>();
 		
 		/*
-		 * Open the channel
+		 * Register the grizzly channel and bind it to the connection
 		 */
-		session.channel().bind(ctx.getConnection());
+		session.register(new GrizzlyChannel()).bind(ctx.getConnection());
 		
 		/*
 		 * Add the session to the attributes
 		 */
 		ctx.getConnection().getAttributes().setAttribute("session", session);
+		
+		/*
+		 * Fire event
+		 */
+		server.getListener().fire(new ConnectEvent(session, (SocketAddress) ctx.getConnection().getPeerAddress()));
 		
 		/*
 		 * Let superclass handle the next action
@@ -118,9 +134,18 @@ public class TempFilter extends BaseFilter {
 	}
 	
 	@Override
-	public void exceptionOccurred(FilterChainContext ctx, Throwable error) {
-		error.printStackTrace();
-		super.exceptionOccurred(ctx, error);
+	public NextAction handleClose(FilterChainContext ctx) throws IOException {
+		Session<?> session = (Session<?>) ctx.getAttributes().getAttribute("session");
+
+		/*
+		 * Fire event
+		 */
+		server.getListener().fire(new DisconnectEvent(session, (SocketAddress) ctx.getConnection().getPeerAddress()));
+		
+		/*
+		 * Let superclass handle the next action
+		 */
+		return super.handleClose(ctx);
 	}
 
 }

@@ -2,8 +2,6 @@ package org.hanonator.net.grizzly;
 
 import java.io.IOException;
 
-import javax.enterprise.context.SessionScoped;
-
 import org.glassfish.grizzly.Connection;
 import org.hanonator.net.Channel;
 
@@ -16,7 +14,7 @@ public class GrizzlyChannel implements Channel<Connection<?>> {
 	
 	@Override
 	public void bind(Connection<?> connection) throws IOException {
-		if (connection != null) {
+		if (this.connection != null) {
 			throw new IOException("connection already exists");
 		}
 		this.connection = connection;
@@ -24,7 +22,7 @@ public class GrizzlyChannel implements Channel<Connection<?>> {
 
 	@Override
 	public void read(Object object) throws IOException {
-		System.out.println(object);
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
@@ -39,6 +37,14 @@ public class GrizzlyChannel implements Channel<Connection<?>> {
 	public void close() throws IOException {
 		if (connection == null || !connection.isOpen()) {
 			throw new IOException("connection already closed");
+		}
+		connection.close();
+	}
+
+	@Override
+	public void closeSilently() {
+		if (connection == null || !connection.isOpen()) {
+			throw new IllegalStateException("connection already closed");
 		}
 		connection.closeSilently();
 	}

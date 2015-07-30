@@ -42,6 +42,13 @@ public interface Channel<T> {
 	 * @throws GameException
 	 */
 	public abstract void close() throws IOException;
+
+	/**
+	 * Closes the stream
+	 * 
+	 * @throws GameException
+	 */
+	public abstract void closeSilently();
 	
 	/**
 	 * Reads an object with a default transformer

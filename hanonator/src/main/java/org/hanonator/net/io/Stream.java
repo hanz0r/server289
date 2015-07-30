@@ -17,6 +17,7 @@ public class Stream<T> {
 	/**
 	 * The channel
 	 */
+	@SuppressWarnings("unused")
 	private final Channel<T> channel;
 	
 	/**
@@ -27,6 +28,7 @@ public class Stream<T> {
 	/**
 	 * The opcode of the message sent through the stream
 	 */
+	@SuppressWarnings("unused")
 	private final int index;
 
 	/**
